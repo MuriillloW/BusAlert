@@ -1,0 +1,20 @@
+#container {
+    margin-top: 25%;
+}
+
+// Container para o corte da logo
+.image-container {
+    width: 300px;
+    height: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
