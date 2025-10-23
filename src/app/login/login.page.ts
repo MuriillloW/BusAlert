@@ -1,14 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import {
+  IonContent,
+  IonInput,
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonCardHeader,
+} from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
-  standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  templateUrl: 'login.page.html',
+  styleUrls: ['login.page.scss'],
+  imports: [
+    IonContent,
+    IonInput,
+    IonButton,
+    IonCard,
+    IonCardContent,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCardHeader,
+    FormsModule,
+  ],
 })
 export class LoginPage {
   email = '';
