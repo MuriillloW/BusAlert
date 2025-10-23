@@ -1,13 +1,23 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="login-content">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card class="login-card">
+
+    <img alt="Logo" src="assets/logos/light-3.png" class="logo" />
+
+    <ion-card-header>
+      <ion-card-title class="welcome-text">Bem-vindo</ion-card-title>
+      <ion-card-subtitle class="welcome-text">Faça login para continuar</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-input label="Digite seu Login:" label-placement="floating" class="login-form" type="text" color="Dark"></ion-input>
+      <ion-input label="Digite sua Senha:" label-placement="floating" class="login-form" type="password" color="Dark"></ion-input>
+
+      <ion-button expand="block" class="submit">Entrar</ion-button>
+      <ion-button expand="block" class="submit">Cadastre-se</ion-button>
+      <ion-button fill="clear" color="danger">Esqueci minha senha</ion-button>
+    </ion-card-content>
+    
+    
+  </ion-card>
 </ion-content>
