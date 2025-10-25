@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { home, person, star } from 'ionicons/icons'
 import { NavController } from '@ionic/angular/standalone';
@@ -11,9 +11,14 @@ import { NavController } from '@ionic/angular/standalone';
   templateUrl: './button-page.page.html',
   styleUrls: ['./button-page.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonFooter, IonButtons ,IonButton, IonIcon ]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonFooter, IonButtons ,IonButton, IonIcon, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent ]
 })
 export class ButtonPagePage implements OnInit {
+  isModalOpen = false;
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
 
   constructor( private navCTRL : NavController) { }
 
