@@ -1,30 +1,53 @@
-#container {
-  text-align: center;
+.header-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+} 
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.ponto {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 95%;
+    height: 60px;
+    border-radius: 30px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
+.ponto-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 150px;
+    // max-height: 85vh;
+    // margin: 5px;
+    // display: block;
+  
+//   border-radius: 15px;
+//   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+//   margin: 16px auto;
+//   width: 95%;
+//   max-height: 85vh;    /* não ultrapassa 85% da altura da viewport */
+//   overflow: auto;      /* mostra scroll interno se necessário */
+//   display: block;
+ }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
 
-  color: #8c8c8c;
 
-  margin: 0;
-}
 
-#container a {
-  text-decoration: none;
-}
+
+
+
+
+
+
+
+
+
 
 
 ion-footer {
@@ -59,9 +82,14 @@ ion-buton:active ion-icon {
 }
 
 .ion-button-center {
-    margin-left: 105px;
+    margin-left: 90px;
 }
 
 .ion-button-end {
     margin-right: 20px;
+}
+
+.tab-button-icon {
+    font-size: 100px;
+    color: red;
 }
