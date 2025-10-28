@@ -1,54 +1,61 @@
-<ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Favoritos</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="header-title">Favoritos</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-button class="ponto" expand="block" (click)="setOpen(true)">Estrada da Cachorra</ion-button>
-  
+<ion-content [fullscreen]="true">
+   
+    <ion-button *ngFor="let p of points" class="ponto" color="danger" (click)="openModal(p)">
+      {{ p.title }}
+    </ion-button>
+
+  <!-- Modal único que mostra os dados do ponto selecionado -->
   <ion-modal [isOpen]="isModalOpen">
+    
     <ng-template>
       
       <ion-header>
         
         <ion-toolbar>
           
-          <ion-title>Ponto 0248</ion-title>
+          <ion-title class="header-title-modal">{{ selectedPoint?.title }}</ion-title>
           
           <ion-buttons slot="end">
-            <ion-button (click)="setOpen(false)"><ion-icon name="close"></ion-icon></ion-button>
+            <ion-button (click)="closeModal()"><ion-icon name="close"></ion-icon></ion-button>
           </ion-buttons>
-        
-        </ion-toolbar>
-      
-      </ion-header>
-        
-    
-          
-      <ion-card class="ponto-card">
-            
-        <img alt="Silhouette of mountains" src="assets/pontos/Praca7.jpg" />
-            
-        <ion-card-header>
-          <ion-card-title>Estrada da Cachorra</ion-card-title>
-          <ion-card-subtitle>Nº2230</ion-card-subtitle>
-        </ion-card-header>
-          
-        <ion-card-content>
-            Em frente ao nº 2230, próximo ao ponto de ônibus, há uma praça com bancos e área verde, ideal para descanso e lazer.
-        </ion-card-content>
-        <ion-button expand="block" class="submit">Ver no Mapa</ion-button>
 
-        <ion-button id="button-alert" fill="clear" expand="block" color="danger" class="submit">Acionar Alerta!</ion-button>
+        </ion-toolbar>
+
+      </ion-header>
+
+      <ion-card class="ponto-card">
+
+        <img [src]="selectedPoint?.img" />
+        <ion-button fill="clear" class="favorit-button"><ion-icon name="star-outline"></ion-icon></ion-button>
+
+        <ion-card-header>
+
+          <ion-card-title>{{ selectedPoint?.title }}</ion-card-title>
+
+          <ion-card-subtitle>{{ selectedPoint?.subtitle }}</ion-card-subtitle>
+
+        </ion-card-header>
         
+        <ion-card-content>
+          {{ selectedPoint?.desc }}
+        </ion-card-content>
+
+        <ion-button fill="clear" color="danger" class="view-map">Ver no Mapa</ion-button>
+
       </ion-card>
-        
-      
+
+      <ion-button id="button-alert"  expand="block" color="danger"  class="submit">Acionar Alerta!</ion-button>
+
     </ng-template>
-  
+
   </ion-modal>
-    
+     
 </ion-content>
 
 
@@ -64,7 +71,7 @@
       
     </ion-buttons>
 
-   <ion-buttons slot="start">
+   <ion-buttons>
       
       <ion-button class="ion-button-center" (click)="goFavoritos()">
         <ion-icon name="star"></ion-icon>

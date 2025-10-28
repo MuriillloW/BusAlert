@@ -14,30 +14,68 @@
     display: block;
     width: 95%;
     height: 60px;
-    border-radius: 30px;
+    --border-radius: 15px;
     --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease;
+    position: relative;
 }
+
+.favorit-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    --background: rgb(255, 255, 255);
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --border-radius: 50%;
+    margin: 0;
+}
+
+.header-title-modal {
+    font-weight: bold;
+    font-size: 25px;
+} 
 
 .ponto-card {
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 150px;
-    // max-height: 85vh;
-    // margin: 5px;
-    // display: block;
-  
-//   border-radius: 15px;
-//   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-//   margin: 16px auto;
-//   width: 95%;
-//   max-height: 85vh;    /* não ultrapassa 85% da altura da viewport */
-//   overflow: auto;      /* mostra scroll interno se necessário */
-//   display: block;
- }
+    max-height: 150vh;
+    margin: 5px;
+    display: block;
+    margin: 16px auto;
+    width: 95%;
+}
 
+.view-map {
+    display: block;
+    margin: 20px auto 30px; /* centraliza horizontalmente */
+    width: 95%;              /* ou ajuste para 'auto' se preferir largura natural */
+    max-width: 360px;        /* limite opcional para não ficar muito largo em telas grandes */
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: transform 0.2s ease;
+    text-align: center;
+}
 
-
+.submit {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 95%;
+    height: 150px;
+    --border-radius: 20px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
 
 
 
@@ -68,21 +106,14 @@ ion-button {
     transition: color 0.2s ease;
 }
 
-ion-button:hover ion-icon,
-ion-button:focus ion-icon,
-ion-buton:active ion-icon {
-    background: rgb(200, 0, 0);
-    font-size: 50px;
-    color:#f5f5f5;
-    border-radius: 5px;
-}
 
 .ion-button-start {
     margin-left: 20px;
 }
 
 .ion-button-center {
-    margin-left: 90px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .ion-button-end {

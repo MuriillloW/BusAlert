@@ -8,43 +8,61 @@
 
 <ion-content [fullscreen]="true">
    
-    <ion-button *ngFor="let p of points" class="ponto" color="danger" shape="round" (click)="openModal(p)">
+    <ion-button *ngFor="let p of points" class="ponto" color="danger" (click)="openModal(p)">
       {{ p.title }}
     </ion-button>
 
   <!-- Modal único que mostra os dados do ponto selecionado -->
   <ion-modal [isOpen]="isModalOpen">
+    
     <ng-template>
+      
       <ion-header>
+        
         <ion-toolbar>
-          <ion-title>{{ selectedPoint?.title }}</ion-title>
+          
+          <ion-title class="header-title-modal">{{ selectedPoint?.title }}</ion-title>
+          
           <ion-buttons slot="end">
             <ion-button (click)="closeModal()"><ion-icon name="close"></ion-icon></ion-button>
           </ion-buttons>
+
         </ion-toolbar>
+
       </ion-header>
 
       <ion-card class="ponto-card">
+
         <img [src]="selectedPoint?.img" />
+        <ion-button fill="clear" class="favorit-button"><ion-icon name="star-outline"></ion-icon></ion-button>
+
         <ion-card-header>
-          <ion-card-title>{{ selectedPoint?.title }}</ion-card-title>
+
+          <ion-card-title>{{ selectedPoint?.title }}</ion-card-title> 
+
           <ion-card-subtitle>{{ selectedPoint?.subtitle }}</ion-card-subtitle>
+
         </ion-card-header>
+        
         <ion-card-content>
           {{ selectedPoint?.desc }}
         </ion-card-content>
-        <ion-button expand="block" class="submit">Ver no Mapa</ion-button>
-        <ion-button id="button-alert" fill="clear" expand="block" color="danger" class="submit">Acionar Alerta!</ion-button>
+
+        <ion-button fill="clear" color="danger" class="view-map">Ver no Mapa</ion-button>
+
       </ion-card>
+
+      <ion-button id="button-alert"  expand="block" color="danger" (click)="sendAlert()" class="submit">Acionar Alerta!</ion-button>
+
     </ng-template>
+
   </ion-modal>
-    
-  
-    
+     
 </ion-content>
-  <ion-footer>
+
+<ion-footer>
   
-  <ion-toolbar class="footer-bar">
+   <ion-toolbar class="footer-bar">
     
     <ion-buttons slot="start">
       
@@ -54,7 +72,7 @@
       
     </ion-buttons>
 
-   <ion-buttons slot="start">
+   <ion-buttons>
       
       <ion-button class="ion-button-center" (click)="goFavoritos()">
         <ion-icon name="star"></ion-icon>
@@ -71,20 +89,4 @@
 
 </ion-footer>
 
-<!-- Possível Alteração no Footer (Comente o atual e descomente o que está abaixo para testar) -->
-  <!-- <ion-tab-bar slot="bottom">
-
-    <ion-tab-button class="tab-button-icon" (click)="goHome()">
-      <ion-icon name="home"></ion-icon>
-    </ion-tab-button>
-
-
-    <ion-tab-button class="tab-button-icon" (click)="goFavoritos()">
-      <ion-icon name="star"></ion-icon>
-    </ion-tab-button>
-
-    
-    <ion-tab-button class="tab-button-icon" (click)="goUser()">
-      <ion-icon name="person"></ion-icon>
-    </ion-tab-button> -->
     

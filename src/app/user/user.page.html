@@ -13,18 +13,32 @@
 </ion-content>
 
 
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button class="tab-button-icon" (click)="goHome()" color="danger">
-      <ion-icon name="home"></ion-icon>
-    </ion-tab-button>
-
-
-    <ion-tab-button class="tab-button-icon" (click)="goFavoritos()">
-      <ion-icon name="star"></ion-icon>
-    </ion-tab-button>
-
+<ion-footer>
+  
+   <ion-toolbar class="footer-bar">
     
-    <ion-tab-button class="tab-button-icon"  (click)="goUser()">
-      <ion-icon name="person"></ion-icon>
-    </ion-tab-button>
+    <ion-buttons slot="start">
+      
+      <ion-button class="ion-button-start" (click)="goHome()">
+        <ion-icon name="home"></ion-icon>
+      </ion-button>
+      
+    </ion-buttons>
+
+   <ion-buttons>
     
+      <ion-button class="ion-button-center" (click)="goFavoritos()">
+        <ion-icon name="star"></ion-icon>
+      </ion-button>
+      
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      
+      <ion-button class="ion-button-end" (click)="goUser()">
+        <ion-icon name="person"></ion-icon>
+      </ion-button>
+      
+    </ion-buttons>
+
+   </ion-toolbar>
