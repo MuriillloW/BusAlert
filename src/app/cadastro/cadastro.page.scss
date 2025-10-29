@@ -18,18 +18,18 @@ ion-label {
 }
 
 .login-form {
-    border: 1px solid #C12020;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 25%);
-    margin: 10px 0;
-    padding: 8px;
-    font-size: 15px;
-    color: #000000;
-    border-width: 2px;
-    --padding-start: 15px;
-    position: relative;
-    top: -40px;
-  }
+  border: 1px solid #C12020;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px 0 rgb(0 0 0 / 25%);
+  margin: 10px 0;
+  padding: 8px;
+  font-size: 15px;
+  color: #000000;
+  border-width: 2px;
+  --padding-start: 15px;
+  position: relative;
+  top: -40px;
+}
 
 
 
@@ -44,13 +44,22 @@ ion-input {
   color: #000000;
   overflow: hidden;
   --padding-start: 10px;
-  --highlight-color-focused: transparent;
+  --highlight-color-focused: #C12020 !important;
+  --highlight-color: #C12020 !important;
+  --highlight-color-valid: #C12020 !important;
+  --highlight-color-invalid: #C12020 !important;
 }
 
-
-ion-input:focus-within {
-  --highlight-color-focused: #C12020;
-
+// Remove the previous focus rules and add this more specific one
+ion-input[type="text"][ngModel],
+ion-input[type="text"]:not([ngModel]),
+ion-input[type="password"] {
+  &:focus-within,
+  &.ion-focused,
+  &.item-has-focus {
+    --highlight-color-focused: #C12020 !important;
+    --highlight-color: #C12020 !important;
+  }
 }
 
 

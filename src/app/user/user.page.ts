@@ -5,8 +5,8 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,Ion
   IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton  } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, person, star, close } from 'ionicons/icons'
-import { library, playCircle, radio, search } from 'ionicons/icons';
+import { home, person, star, close, createOutline } from 'ionicons/icons'
+
 
 
 @Component({
@@ -18,10 +18,14 @@ import { library, playCircle, radio, search } from 'ionicons/icons';
     IonCardSubtitle, IonCardContent, IonModal, IonTab, IonTabs, IonTabBar, IonTabButton ]
 })
 export class UserPage implements OnInit {
+  
+
 
 
   ngOnInit() {
   }
+
+  
 
   constructor(private navCTRL: NavController) { }
   goHome(){
@@ -37,5 +41,4 @@ export class UserPage implements OnInit {
   }
 }
 
-addIcons ({ home, person, star, close})
-addIcons({ library, playCircle, radio, search });
+addIcons({ home, person, star, close, createOutline });

@@ -29,7 +29,7 @@
       </ion-input>
 
       <ion-label>CEP</ion-label>
-      <ion-input type="text" maxlength="9" [(ngModel)]="cep" (ionInput)="resetResponse()"></ion-input>
+      <ion-input id="cep" #cepInput type="text" maxlength="9" [(ngModel)]="cep" (ionInput)="onCepInput($event)"></ion-input>
       
       <div *ngIf="errorMessage" style="color: red;">
           {{ errorMessage }}

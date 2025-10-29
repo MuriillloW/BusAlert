@@ -18,9 +18,17 @@ export class CadastroPage implements OnInit {
 
   constructor() { }
 
+
+  // Validação CEP com formatação
   resetResponse() {
     this.errorMessage = '';
     this.dados = null;
+  }
+
+  onCepInput(event: any) {
+   this.resetResponse();
+    const digits = ((event?.target?.value ?? '') as string).replace(/\D/g, '').substring(0, 8);
+   this.cep = digits.replace(/^(\d{5})(\d{0,3})$/, (_m, g1, g2) => g2 ? `${g1}-${g2}` : g1);
   }
 
   async consultarCep() {
@@ -65,6 +73,8 @@ export class CadastroPage implements OnInit {
     }
   }
 
+
+  
 
   ngOnInit() {
   }
