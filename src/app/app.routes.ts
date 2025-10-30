@@ -23,10 +23,6 @@ export const routes: Routes = [
     loadComponent: () => import('./favoritos/favoritos.page').then( m => m.FavoritosPage)
   },
   {
-    path: 'button-page',
-    loadComponent: () => import('./button-page/button-page.page').then( m => m.ButtonPagePage)
-  },
-  {
     path: 'user',
     loadComponent: () => import('./user/user.page').then( m => m.UserPage)
   },

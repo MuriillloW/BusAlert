@@ -4,7 +4,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,Ion
   IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, person, star, close } from 'ionicons/icons'
+import { home, person, star, close, starOutline } from 'ionicons/icons'
 import { Subscription } from 'rxjs';
 import { Ponto, PontoService } from '../services/pontos';
 
@@ -57,5 +57,11 @@ export class HomePage implements OnInit, OnDestroy {
     this.navCTRL.navigateRoot('/user');
   }
 
+  async sendAlert() {
+    // Aqui você implementa a lógica para enviar o comando ao Arduino
+    // Pode ser via Web Serial API, Bluetooth, etc.
+    console.log('Alerta enviado ao Arduino!');
+  }
+
 }
-addIcons({ home, person, star, close })
+addIcons({ home, person, star, close, starOutline })

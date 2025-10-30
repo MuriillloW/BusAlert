@@ -10,26 +10,33 @@ export interface Ponto {
 }
 
 const Initial: Ponto [] = [
-    {   id: 'p1',
+    {   id: 'P01',
         title: 'Avenida Cesário de Melo',
         subtitle: 'Nº2230',
         img: 'assets/pontos/Praca7.jpg',
         desc: 'Em frente à creche.'
     },
 
-    {   id: 'p2',
+    {   id: 'P02',
         title: 'Estrada da Cachorra',
         subtitle: 'Nº2230',
         img: 'assets/pontos/Praca7.jpg',
         desc: 'Próximo ao mercado Super Compras.'
     },
 
-    {   id: 'p3',
+    {   id: 'P03',
         title: 'Rua das Flores',
         subtitle: 'Nº150',
         img: 'assets/pontos/Praca7.jpg',
         desc: 'Próximo ao parque das flores.'
-      }
+      },
+
+    {  id: 'P04',
+        title: 'Avenida Brasil',
+        subtitle: 'Nº1000',
+        img: 'assets/pontos/Praca7.jpg',
+        desc: 'Próximo ao shopping.'
+    }
 
     ];
 @Injectable({ providedIn: 'root' })
