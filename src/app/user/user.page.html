@@ -1,10 +1,45 @@
 <ion-content [fullscreen]="true">
   <ion-card class="card-user">
     
-    <img alt="person" class="foto" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-        <ion-button fill="clear" class="edit-button"><ion-icon name="create-outline"></ion-icon></ion-button>
-        
-          <ion-modal></ion-modal>
+    <img alt="person" class="foto" src="../../assets/icon/avatar.png" />
+        <ion-button fill="clear" class="edit-button" (click)="openEditModal()"><ion-icon name="create-outline"></ion-icon></ion-button>
+
+        <ion-modal [isOpen]="isModalOpen">
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>Editar Perfil</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button (click)="closeEditModal()">Fechar</ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+
+            <ion-content>
+
+                 <ion-card class="card-user">
+
+                    <img alt="person" class="foto" src="../../assets/icon/avatar.png" />
+
+                    <ion-item>
+                      <ion-label position="stacked">Nome</ion-label>
+                      <ion-input [(ngModel)]="editUser.name" placeholder="Seu nome"></ion-input>
+                    </ion-item>
+    
+                    <ion-item style="margin-top:12px;">
+                      <ion-label position="stacked">Email</ion-label>
+                      <ion-input [(ngModel)]="editUser.email" type="email" placeholder="seu@email.com"></ion-input>
+                    </ion-item>
+    
+                    
+                      <ion-button class="act-btn" expand="block" color="danger" (click)="closeEditModal()">Cancelar</ion-button>
+                      <ion-button class="act-btn" expand="block" color="danger" (click)="saveProfile()">Salvar</ion-button>
+
+                  </ion-card>
+              
+            </ion-content>
+          </ng-template>
+        </ion-modal>
   
   
   
@@ -12,8 +47,8 @@
   
   
     <ion-card-header>
-    <ion-card-title class="nome-card">Nome</ion-card-title>
-    <ion-card-subtitle class="email-card">Email: exemplo@exemplo.com</ion-card-subtitle>
+    <ion-card-title class="nome-card">{{ user.name }}</ion-card-title>
+    <ion-card-subtitle class="email-card">{{ user.email }}</ion-card-subtitle>
   </ion-card-header>
 
   
