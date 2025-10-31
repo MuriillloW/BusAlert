@@ -1,96 +1,278 @@
+// Variáveis de cores para tema claro
+:root, .light-theme {
+  --background-color: #f8f9fa;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --input-background: #ffffff;
+  --footer-background: #ffffff;
+}
+
+// Variáveis de cores para tema escuro
+.dark-theme {
+  --background-color: #121212;
+  --card-background: #1e1e1e;
+  --text-color: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #333333;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --input-background: #2d2d2d;
+  --footer-background: #1a1a1a;
+}
+
+// Aplicação do tema global
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// Componentes Ionic - aplicar as variáveis
+ion-content {
+  --background: var(--background-color);
+}
+
+ion-toolbar {
+  --background: var(--card-background);
+  --color: var(--text-color);
+}
+
+ion-title {
+  color: var(--text-color);
+}
+
+ion-card {
+  --background: var(--card-background);
+  color: var(--text-color);
+}
+
+ion-item {
+  --background: var(--card-background);
+  --color: var(--text-color);
+}
+
+ion-input {
+  --background: var(--input-background);
+  --color: var(--text-color);
+  --placeholder-color: var(--text-secondary);
+}
+
+ion-label {
+  color: var(--text-color);
+}
+
+ion-button {
+  --color: var(--text-color);
+}
+
+// Estilos específicos da página
+.header-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+  color: var(--text-color);
+}
+
 .card-user {
-    margin-top: 100px;
-    margin: 20px;
-    padding: 50px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    background-color: #fff;
+  margin-top: 20px;
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  border-radius: 16px;
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+}
+
+.edit-modal-card {
+  margin: 16px;
+  padding: 20px;
 }
 
 .foto {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   margin: 20px auto;
   display: block;
+  border: 4px solid var(--border-color);
 }
 
 .nome-card {
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    margin-top: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: var(--text-color);
 }
+
 .email-card {
-    text-align: center;
-    font-size: 20px;
-    color: gray;
-    margin-top: 5px;
+  text-align: center;
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: 5px;
 }
 
 .edit-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
-    --background: rgb(255, 255, 255);
-    --padding-start: 8px;
-    --padding-end: 8px;
-    --padding-top: 8px;
-    --padding-bottom: 8px;
-    --border-radius: 50%;
-    margin: 0;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  --background: var(--card-background);
+  --color: var(--text-color);
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --border-radius: 50%;
+  margin: 0;
+  border: 1px solid var(--border-color);
+}
+
+.theme-toggle {
+  --color: var(--text-color);
+}
+
+// Seção de Configurações
+.settings-section {
+  margin-top: 30px;
+}
+
+.setting-card {
+  background: var(--card-background);
+  box-shadow: none;
+  border: 1px solid var(--border-color);
+  margin: 0;
+}
+
+.setting-title {
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  span {
+    color: var(--text-color);
+    font-size: 16px;
+  }
+}
+
+.theme-toggle-btn {
+  --color: var(--text-color);
+}
+
+// Formulário
+.form-item {
+  --background: var(--card-background);
+  margin: 16px 0;
+  
+  ion-label {
+    color: var(--text-color);
+    font-weight: 500;
+  }
+}
+
+.custom-input {
+  --background: var(--input-background);
+  --color: var(--text-color);
+  --placeholder-color: var(--text-secondary);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.action-buttons {
+  margin-top: 24px;
 }
 
 .act-btn {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: bold;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    width: 95%;
-    height: 60px;
-    --border-radius: 15px;
-    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 100%;
+  height: 50px;
+  --border-radius: 12px;
+  --box-shadow: 0 2px 8px var(--shadow-color);
+  transition: all 0.3s ease;
 }
 
-ion-button {
-    color: red;
-    font-size: 30px;
-    transition: color 0.2s ease;
+.cancel-btn {
+  --background: var(--text-secondary);
+  --color: var(--card-background);
+}
+
+.save-btn {
+  --background: #ff3b30;
+  --color: white;
 }
 
 
-ion-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-.footer-bar {
-    --background: white;
-    display: flex;
-    justify-content: space-between;
-}
-
-ion-button {
-    color: red;
-    font-size: 30px;
-    transition: color 0.2s ease;
+.nav-button {
+  --color: #6c757d;
+  font-size: 24px;
+  transition: all 0.3s ease;
+  
+  &.active {
+    --color: #ff3b30;
+  }
 }
 
 .ion-button-start {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .ion-button-center {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ion-button-end {
-    margin-right: 20px;
+  margin-right: 20px;
+}
+
+// Toggle customizado para tema escuro
+ion-toggle {
+  --background: #6c757d;
+  --background-checked: #ff3b30;
+  --handle-background: #ffffff;
+  --handle-background-checked: #ffffff;
+}
+
+// Efeitos de transição suave para todos os elementos
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+// Ajustes específicos para modo escuro
+.dark-theme {
+  .card-user {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .edit-button {
+    --background: #2d2d2d;
+  }
+  
+  .act-btn {
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  // Garantir que os textos nos cards fiquem legíveis
+  ion-card-title, ion-card-subtitle {
+    color: var(--text-color);
+  }
 }
