@@ -1,22 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonList, IonLabel, IonItem, IonInputPasswordToggle, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg} from '@ionic/angular/standalone';
+
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+
+import { Router, RouterLink } from '@angular/router';
+
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonList, IonLabel, IonItem, IonInputPasswordToggle, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonText} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro.page.html',
   styleUrls: ['./cadastro.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonInput, IonList, IonLabel, IonItem, IonInputPasswordToggle, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonInput, IonList, IonLabel, IonItem, IonInputPasswordToggle, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonText, RouterLink]
 })
 export class CadastroPage implements OnInit {
+  // Campo de casdastro
+  nome: string = '';
+  email: string = '';
+  senha: string = '';
+  confirm: string = '';
+
+
+
+
   cep: string = '';
   dados: any = null;
   errorMessage: string = '';
   sucessMessage: string = '';
 
+  // Controle de erro de cadastro
+  error = '';
+
+  private auth = inject(Auth);
+  private router = inject(Router);
+
   constructor() { }
+
+
 
 
   // Validação CEP com formatação
@@ -38,7 +60,7 @@ export class CadastroPage implements OnInit {
     const cepDigits = (this.cep || '').replace(/\D/g, '');
 
     if (!cepDigits || cepDigits.length !== 8) {
-      this.errorMessage = 'Por favor, insira um CEP válido com 8 dígitos.';
+      this.errorMessage = '*Por favor, insira um CEP válido com 8 dígitos.';
       return;
     }
 
@@ -74,9 +96,36 @@ export class CadastroPage implements OnInit {
   }
 
 
-  
+  // Cadastro Firebase
+
+  async register() {
+    this.error = '';
+
+    if ( !this.nome || !this.email || !this.senha) { 
+      this.error = '*Preencha todos os campos.';
+      return; }
+
+    if (this.senha.length < 8) { 
+      this.error = '*A senha precisa ter pelo menos 8 caracteres.';
+      return; }
+
+    if (this.senha !== this.confirm) { 
+      this.error = '*As senhas não conferem.'; 
+      return; }
+
+    try {
+      await createUserWithEmailAndPassword(this.auth, this.email, this.senha);
+      await this.router.navigateByUrl('/home'); // já entra autenticado
+    } catch (e: any) {
+      this.error = e?.code ?? 'Falha ao cadastrar';
+    }
+  }
+
 
   ngOnInit() {
+    
   }
+
+  
 
 }

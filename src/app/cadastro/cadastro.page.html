@@ -12,19 +12,19 @@
     
       <ion-card-content>
       <ion-label>Nome</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input [(ngModel)]="nome" type="text"></ion-input>
 
       <ion-label>Email</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input [(ngModel)]="email" type="text"></ion-input>
 
       <ion-label>Senha</ion-label>
-      <ion-input type="password">
+      <ion-input [(ngModel)]="senha" type="password" autocomplete="new-password">
         <ion-input-password-toggle color="danger" class="toggle-vermelho" slot="end"></ion-input-password-toggle>
       </ion-input>
       
 
       <ion-label>Confirmar senha</ion-label>
-      <ion-input type="password">
+      <ion-input [(ngModel)]="confirm" type="password" autocomplete="new-password">
         <ion-input-password-toggle color="danger" class="toggle-vermelho" slot="end"></ion-input-password-toggle>
       </ion-input>
 
@@ -33,9 +33,20 @@
       
       <div *ngIf="errorMessage" style="color: red;">
           {{ errorMessage }}
+
+
+          @if (error) {
+        <ion-text color="red"><p class="ion-padding-top">{{ error }}</p></ion-text>
+      }
       </div>
 
-      <ion-button class="submit" (click)="consultarCep()">Cadastrar</ion-button>
+      <ion-button class="submit" (click)="consultarCep(); register()">Cadastrar</ion-button>
+
+
+      
+
       </ion-card-content>
+
+
 
 </ion-content>

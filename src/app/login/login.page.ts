@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+
 import {
   IonContent,
   IonInput,
@@ -8,6 +12,7 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonCardHeader,
+  IonText
 } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 
@@ -25,21 +30,41 @@ import { FormsModule } from '@angular/forms';
     IonCardTitle,
     IonCardHeader,
     FormsModule,
+    RouterLink,
+    IonText
   ],
 })
 export class LoginPage {
-  email = '';
-  password = '';
+  private auth = inject(Auth);
+  private router = inject(Router);
+  error = '';
 
-  constructor() {}
+  email: string = '';
+  senha: string = '';
 
-  onSubmit() {
-    // Placeholder: implementar autenticação
-    console.log('login', this.email, this.password);
+  async loginEmail() {
+    this.error = '';
+    try {
+      await signInWithEmailAndPassword(this.auth, this.email, this.senha);
+      await this.router.navigateByUrl('/home');
+    } catch (e: any) {
+      this.error = e?.code ?? 'Falha ao autenticar (email/senha)';
+    }
   }
 
-  onRegister() {
-    // navegar para cadastro se necessário
-    console.log('register');
-  }
+
+  // email = '';
+  // password = '';
+
+  // constructor() {}
+
+  // onSubmit() {
+  //   // Placeholder: implementar autenticação
+  //   console.log('login', this.email, this.password);
+  // }
+
+  // onRegister() {
+  //   // navegar para cadastro se necessário
+  //   console.log('register');
+  // }
 }
