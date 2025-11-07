@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, 
@@ -7,6 +7,9 @@ import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { home, person, star, close, createOutline } from 'ionicons/icons'
 
+import { Auth, authState, signOut, User, user, updateProfile, updateEmail } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -18,6 +21,12 @@ import { home, person, star, close, createOutline } from 'ionicons/icons'
     IonCardSubtitle, IonCardContent, IonModal, IonInput, IonItem, IonLabel, IonTab, IonTabs, IonTabBar, IonTabButton ]
 })
 export class UserPage implements OnInit {
+  // Logout
+  private auth = inject(Auth);
+  private router = inject(Router);
+  private sub?: Subscription;
+
+
 
   isModalOpen = false;
   user: { name: string; email: string } = { name: 'Nome', email: 'exemplo@exemplo.com' };
@@ -64,6 +73,15 @@ export class UserPage implements OnInit {
     this.isModalOpen = false;
     window.alert('Perfil atualizado.');
   }
+
+  
+  async sair() {
+    await signOut(this.auth);
+    await this.router.navigateByUrl('/login');
+  }
+
+
+
 }
 
 addIcons({ home, person, star, close, createOutline });
