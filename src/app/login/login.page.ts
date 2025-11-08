@@ -34,7 +34,6 @@ import { FormsModule } from '@angular/forms';
     IonText
   ],
 })
-
 export class LoginPage {
   private auth = inject(Auth);
   private router = inject(Router);
@@ -50,7 +49,7 @@ export class LoginPage {
         return 'O formato do e-mail está incorreto.';
       case 'auth/user-not-found':
       case 'auth/wrong-password':
-      case 'auth/invalid-credential':
+      case 'auth/invalid-credential': // O erro que você encontrou
         return 'Credenciais inválidas. E-mail ou senha incorretos.';
       case 'auth/user-disabled':
         return 'Esta conta foi desativada. Entre em contato com o suporte.';
@@ -63,6 +62,7 @@ export class LoginPage {
     }
   }
 
+  
 
   async loginEmail() {
     this.error = '';
