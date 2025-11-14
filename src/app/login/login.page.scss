@@ -7,7 +7,8 @@
   width: 200px;
   height: 100px;
   overflow: hidden;
-  margin: 20% auto 0 auto;
+  /* Reduzi a margem superior para que o card não seja empurrado tão pra baixo */
+  margin: 0% auto 0 auto;
 }
 
  .logo {
@@ -36,7 +37,6 @@
 .login-card {
   position: relative;
   left: 20px;
-  margin-top: -75px;
   background: #ffffff;
   padding: 20px;
   width: 100%;
@@ -47,8 +47,8 @@
 
   .login-form {
     border: 1px solid #C12020;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 25%);
+    border-radius: 15px;
+    // box-shadow: 0 2px 6px 0 rgb(0 0 0 / 25%);
     margin: 10px 0;
     padding: 8px;
     font-size: 15px;
@@ -62,7 +62,6 @@
   .submit {
     --background: #ffffff;
     --background-activated: #C12020;
-    --color: #000000;
     --border-radius: 40px;
     --border-color: #C12020;
     --border-style: solid;
@@ -74,9 +73,15 @@
     display: block;
     width: 100%;
     position: relative;
-    top: -30px;
+    height: 70px;
+    font-size: large;
   }
 
+  .forgot {
+    margin-top: 15px;
+    font-size: 14px;
+
+}
 }
 
 // /* Responsividade (mobile)   */
@@ -103,6 +108,8 @@
     margin-right: auto;
     width: 92%;
     padding: 16px;
+    /* Em telas menores não aplicamos o deslocamento vertical */
+    transform: none;
   }
 
   .login-card .login-form,
@@ -158,5 +165,54 @@
     margin-right: auto;      
     max-width: 640px;        
     width: 85%;
+    /* Move o card pra cima nas telas maiores */
+    transform: translateY(-48px);
   }
 }
+
+/* Especificidade extra para remover a linha/realce verde do Ionic
+   quando ngModel marca o controle como válido. Aplica no ::part(native)
+   do ion-input (input nativo dentro do shadow DOM) e força as
+   propriedades de highlight para transparent/sem sombra. */
+
+:where(.login-card) ion-input.login-form,
+:where(.login-card) ion-input.login-form.ion-valid,
+:where(.login-card) ion-input.login-form.ion-invalid {
+  --highlight-color: transparent !important;
+  // --highlight-color-focused: transparent !important;
+  // --highlight-color-valid: transparent !important;
+  // --highlight-color-invalid: transparent !important;
+}
+
+// :where(.login-card) ion-input.login-form::part(native) {
+//   outline: none !important;
+//   box-shadow: none !important;
+//   border-bottom: 2px solid transparent !important; /* remove linha visível */
+//   background-clip: padding-box !important;
+// }
+
+/* Também atacar estados onde Ionic adiciona classes como .ion-valid */
+// :where(.login-card) ion-input.login-form.ion-valid::part(native),
+// :where(.login-card) ion-input.login-form.ion-focused::part(native),
+// :where(.login-card) ion-input.login-form.ion-focused.ion-valid::part(native) {
+//   outline: none !important;
+//   box-shadow: none !important;
+//   border-bottom-color: transparent !important;
+// }
+
+// /* Autofill (Chrome) no input nativo dentro do ion-input */
+// :where(.login-card) ion-input.login-form::part(native):-webkit-autofill {
+//   -webkit-box-shadow: 0 0 0px 1000px var(--input-background, #ffffff) inset !important;
+//   box-shadow: none !important;
+//   -webkit-text-fill-color: inherit !important;
+// }
+
+// /* Fallback para navegadores que não aplicam ::part to pseudo-classes; tenta atingir
+//    o input interno via seletor de descendente quando possível (mais genérico). */
+// :where(.login-card) .login-form input,
+// :where(.login-card) .login-form textarea {
+//   outline: none !important;
+//   box-shadow: none !important;
+//   border-bottom: 2px solid transparent !important;
+// }
+
