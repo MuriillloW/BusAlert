@@ -77,28 +77,6 @@
     transition: transform 0.2s ease;
 }
 
-
-
-
-ion-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-.footer-bar {
-    --background: white;
-    display: flex;
-    justify-content: space-between;
-}
-
-ion-button {
-    color: red;
-    font-size: 30px;
-    transition: color 0.2s ease;
-}
-
-
 .ion-button-start {
     margin-left: 20px;
 }
@@ -111,4 +89,6 @@ ion-button {
 .ion-button-end {
     margin-right: 20px;
 }
+
+
 

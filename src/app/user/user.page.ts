@@ -16,8 +16,12 @@ import { Subscription } from 'rxjs';
   templateUrl: './user.page.html',
   styleUrls: ['./user.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, 
-    IonCardSubtitle, IonCardContent, IonModal, IonInput, IonItem, IonLabel, IonTab, IonTabs, IonTabBar, IonTabButton ]
+  imports: [
+    CommonModule, FormsModule, IonContent, IonHeader, IonTitle, IonToolbar, 
+    IonFooter, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, 
+    IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonInput, 
+    IonItem, IonLabel, IonToggle
+  ]
 })
 
 export class UserPage implements OnInit {
@@ -41,8 +45,7 @@ export class UserPage implements OnInit {
   // ⬅️ ALTERADO: Inicialização simples para ser substituída pelo Firebase no ngOnInit
   user: { name: string; email: string } = { name: 'Carregando...', email: 'Carregando...' };
   editUser: { name: string; email: string } = { ...this.user };
-  
-
+  notificationsEnabled: boolean = true;
 
   // ⬅️ ALTERADO: Substituída a função ngOnInit para carregar os dados do Firebase
   ngOnInit() {
@@ -62,19 +65,27 @@ export class UserPage implements OnInit {
     this.userSubscription?.unsubscribe();
   }
 
-  
-
-  constructor(private navCTRL: NavController) { }
-  goHome(){
-    this.navCTRL.navigateRoot('/home');
+  ngOnDestroy() {
+    // Cleanup se necessário
   }
 
-  goFavoritos(){
-    this.navCTRL.navigateRoot('/favoritos');
+  // --- Sistema de Tema ---
+  toggleTheme() {
+    this.themeService.toggleTheme();
+    this.themeIcon = this.themeService.getThemeIcon();
   }
 
-  goUser(){
-    this.navCTRL.navigateRoot('/user');
+  // --- Resto do código permanece igual ---
+  loadUserData() {
+    const savedUser = localStorage.getItem('userData');
+    if (savedUser) {
+      this.user = JSON.parse(savedUser);
+      this.editUser = { ...this.user };
+    }
+  }
+
+  saveUserData() {
+    localStorage.setItem('userData', JSON.stringify(this.user));
   }
 
   openEditModal(){
@@ -84,7 +95,7 @@ export class UserPage implements OnInit {
     this.isModalOpen = true;
   }
 
-  closeEditModal(){
+  closeEditModal() {
     this.isModalOpen = false;
   }
 
@@ -183,4 +194,11 @@ export class UserPage implements OnInit {
 
 }
 
-addIcons({ home, person, star, close, createOutline });
+  goFavoritos() {
+    this.navCTRL.navigateRoot('/favoritos');
+  }
+
+  goUser() {
+    // Já está na página do usuário
+  }
+}

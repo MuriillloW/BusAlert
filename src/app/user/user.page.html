@@ -1,39 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="header-title">Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleTheme()" class="theme-toggle">
+        <ion-icon slot="icon-only" [name]="themeIcon"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true">
   <ion-card class="card-user">
-    
     <img alt="person" class="foto" src="../../assets/icon/avatar.png" />
-        <ion-button fill="clear" class="edit-button" (click)="openEditModal()"><ion-icon name="create-outline"></ion-icon></ion-button>
+    <ion-button fill="clear" class="edit-button" (click)="openEditModal()">
+      <ion-icon name="create-outline"></ion-icon>
+    </ion-button>
 
-        <ion-modal [isOpen]="isModalOpen">
-          <ng-template>
-            <ion-header>
-              <ion-toolbar>
-                <ion-title>Editar Perfil</ion-title>
-                <ion-buttons slot="end">
-                  <ion-button (click)="closeEditModal()">Fechar</ion-button>
-                </ion-buttons>
-              </ion-toolbar>
-            </ion-header>
+    <ion-card-header>
+      <ion-card-title class="nome-card">{{ user.name }}</ion-card-title>
+      <ion-card-subtitle class="email-card">{{ user.email }}</ion-card-subtitle>
+    </ion-card-header>
 
-            <ion-content>
+    <!-- Seção de Configurações -->
+    <div class="settings-section">
+      <ion-card class="setting-card">
+        <ion-card-header>
+          <ion-card-title class="setting-title">Preferências</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="setting-item">
+            <span>Tema Escuro</span>
+            <ion-button fill="clear" (click)="toggleTheme()" class="theme-toggle-btn">
+              <ion-icon [name]="themeIcon"></ion-icon>
+            </ion-button>
+          </div>
+          <div class="setting-item">
+            <span>Notificações</span>
+            <ion-toggle checked="true"></ion-toggle>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-card>
 
-                 <ion-card class="card-user">
+  <!-- Modal de Edição -->
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar Perfil</ion-title>
+          
+        </ion-toolbar>
+      </ion-header>
 
-                    <img alt="person" class="foto" src="../../assets/icon/avatar.png" />
+      <ion-content>
+        <ion-card class="card-user edit-modal-card">
+          <img alt="person" class="foto" src="../../assets/icon/avatar.png" />
 
-                    <ion-item>
-                      <ion-label position="stacked">Nome</ion-label>
-                      <ion-input [(ngModel)]="editUser.name" placeholder="Seu nome"></ion-input>
-                    </ion-item>
-    
-                    <ion-item style="margin-top:12px;">
-                      <ion-label position="stacked">Email</ion-label>
-                      <ion-input [(ngModel)]="editUser.email" type="email" placeholder="seu@email.com"></ion-input>
-                    </ion-item>
-    
-                    
-                      <ion-button class="act-btn" expand="block" color="danger" (click)="closeEditModal()">Cancelar</ion-button>
-                      <ion-button class="act-btn" expand="block" color="danger" (click)="saveProfile()">Salvar</ion-button>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Nome</ion-label>
+            <ion-input 
+              [(ngModel)]="editUser.name" 
+              placeholder="Seu nome"
+              class="custom-input">
+            </ion-input>
+          </ion-item>
 
                   </ion-card>
               
@@ -59,31 +90,23 @@
 
 
 <ion-footer>
-  
-   <ion-toolbar class="footer-bar">
-    
+  <ion-toolbar class="footer-bar">
     <ion-buttons slot="start">
-      
       <ion-button class="ion-button-start" (click)="goHome()">
         <ion-icon name="home"></ion-icon>
       </ion-button>
-      
     </ion-buttons>
 
-   <ion-buttons>
-    
+    <ion-buttons>
       <ion-button class="ion-button-center" (click)="goFavoritos()">
         <ion-icon name="star"></ion-icon>
       </ion-button>
-      
     </ion-buttons>
 
     <ion-buttons slot="end">
-      
       <ion-button class="ion-button-end" (click)="goUser()">
         <ion-icon name="person"></ion-icon>
       </ion-button>
-      
     </ion-buttons>
-
-   </ion-toolbar>
+  </ion-toolbar>
+</ion-footer>
