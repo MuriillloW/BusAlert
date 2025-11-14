@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, 
-  IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
+
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { home, person, star, close, starOutline } from 'ionicons/icons'
 import { Subscription } from 'rxjs';
 import { Ponto, PontoService } from '../services/pontos';
-
 
 
 @Component({
@@ -23,17 +22,23 @@ export class FavoritosPage implements OnInit, OnDestroy {
   selectedPoint: Ponto | null = null;
   isModalOpen = false;
   private sub?: Subscription;
+  private subFav?: Subscription;
 
   constructor(private pontoService: PontoService, private navCTRL: NavController) {}
 
   ngOnInit() {
-    this.sub = this.pontoService.getAll().subscribe(list => this.points = list);
+    this.sub = this.pontoService.getAll().subscribe(list => {
+      // mantém lista completa em memória se necessário
+      // a lista exibida de favoritos vem de getFavorites()
+    });
+    this.subFav = this.pontoService.getFavorites().subscribe(favs => this.points = favs);
   }
   ngOnDestroy() {
     this.sub?.unsubscribe();
+    this.subFav?.unsubscribe();
 
   }
-  // métodos para abrir/fechar o modal com dados do ponto
+  // métodos para  abrir/fechar o modal com dados do ponto
   openModal(p: Ponto) {
     this.selectedPoint = p;
     this.isModalOpen = true;
@@ -42,6 +47,18 @@ export class FavoritosPage implements OnInit, OnDestroy {
   closeModal() {
     this.isModalOpen = false;
     this.selectedPoint = null;
+  }
+
+
+  // Delegam para PontoService as operações de favoritos
+  isFavorite(p?: Ponto | null): boolean {
+    if (!p) return false;
+    return this.pontoService.isFavorite(p.id);
+  }
+
+  toggleFavorite(p: Ponto | null) {
+    if (!p) return;
+    this.pontoService.toggleFavorite(p.id);
   }
 
   

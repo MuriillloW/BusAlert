@@ -31,10 +31,12 @@
 
       </ion-header>
 
-      <ion-card class="ponto-card">
+        <ion-card class="ponto-card">
 
         <img [src]="selectedPoint?.img" />
-        <ion-button fill="clear" class="favorit-button"><ion-icon name="star-outline"></ion-icon></ion-button>
+        <ion-button fill="clear" class="favorit-button" (click)="toggleFavorite(selectedPoint)">
+          <ion-icon [name]="isFavorite(selectedPoint) ? 'star' : 'star-outline'"></ion-icon>
+        </ion-button>
 
         <ion-card-header>
 

@@ -1,12 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonInput, IonItem, IonLabel, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton, AlertController  } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonInput, IonItem, IonLabel, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton, AlertController, IonToggle  } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, person, star, close, createOutline } from 'ionicons/icons'
-
+import { home, person, star, close, createOutline, sunny, moon } from 'ionicons/icons'
 import { Auth, authState, signOut, User, user, updateProfile, updateEmail } from '@angular/fire/auth';
+import { ThemeService } from 'src/app/services/theme.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -25,30 +25,41 @@ import { Subscription } from 'rxjs';
 })
 
 export class UserPage implements OnInit {
-
-  private auth = inject(Auth);
+  
+  
+  private auth: Auth = inject(Auth);
   private router = inject(Router);
+  // Injeção do NavController para navegação entre páginas
+  private navCtrl = inject(NavController);
   private sub?: Subscription;
   // ⬅️ NOVO: Injeção do AlertController
   private alertController = inject(AlertController);
-
+  
   
   email: string | null = null;
-
-
+  
+  
   // ⬅️ NOVO: Variável para o objeto User do Firebase e Subscription
   currentUser: User | null = null;
   private userSubscription: Subscription | undefined;
-
-
+  
+  
   isModalOpen = false;
   // ⬅️ ALTERADO: Inicialização simples para ser substituída pelo Firebase no ngOnInit
   user: { name: string; email: string } = { name: 'Carregando...', email: 'Carregando...' };
   editUser: { name: string; email: string } = { ...this.user };
   notificationsEnabled: boolean = true;
-
+  
+  
+  // Propriedades para o sistema de tema (usa o ThemeService real)
+  themeIcon: string = 'sunny';
+  private themeService = inject(ThemeService);
+  
   // ⬅️ ALTERADO: Substituída a função ngOnInit para carregar os dados do Firebase
   ngOnInit() {
+    { 
+      addIcons({ home, person, star, close, createOutline, moon, sunny });
+    }
     this.userSubscription = user(this.auth).subscribe(u => {
       this.currentUser = u;
       if (u) {
@@ -57,24 +68,29 @@ export class UserPage implements OnInit {
         this.editUser = { ...this.user }; // Preenche a modal de edição
       }
     });
-  
+    // Inicializa o tema (carrega preferências e aplica classes no body)
+    try {
+      this.themeService.initializeTheme();
+      this.themeIcon = this.themeService.getThemeIcon();
+    } catch (err) {
+      // Se algo der errado, mantém o ícone padrão
+      console.warn('Theme initialization failed', err);
+    }
+    
   }
-
+  
   // ⬅️ NOVO: Hook para remover a subscrição quando a página for destruída
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
   }
-
-  ngOnDestroy() {
-    // Cleanup se necessário
-  }
-
+  
+  
   // --- Sistema de Tema ---
   toggleTheme() {
     this.themeService.toggleTheme();
     this.themeIcon = this.themeService.getThemeIcon();
   }
-
+  
   // --- Resto do código permanece igual ---
   loadUserData() {
     const savedUser = localStorage.getItem('userData');
@@ -185,20 +201,23 @@ export class UserPage implements OnInit {
 
 
 
+  // Navega para Favoritos
+  goFavoritos() {
+    this.navCtrl.navigateRoot('/favoritos');
+  }
+
+  // Já está na página do usuário (placeholder)
+  goUser() {
+    // permanece aqui por compatibilidade - sem ação
+  }
+  goHome() {
+    this.navCtrl.navigateRoot('/home');
+  }
+
   async sair() {
     await signOut(this.auth);
     await this.router.navigateByUrl('/login');
   }
 
 
-
-}
-
-  goFavoritos() {
-    this.navCTRL.navigateRoot('/favoritos');
-  }
-
-  goUser() {
-    // Já está na página do usuário
-  }
 }
