@@ -15,6 +15,8 @@ import { Ponto, PontoService } from '../services/pontos';
   imports: [CommonModule, IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, 
     IonCardSubtitle, IonCardContent, IonModal, IonTab, IonTabs, IonTabBar, IonTabButton  ],
 })
+
+
 export class HomePage implements OnInit, OnDestroy {
   // Lista de pontos — Opção A: usar *ngFor para gerar a lista
   points: Ponto[] = [];
@@ -61,6 +63,17 @@ export class HomePage implements OnInit, OnDestroy {
     // Aqui você implementa a lógica para enviar o comando ao Arduino
     // Pode ser via Web Serial API, Bluetooth, etc.
     console.log('Alerta enviado ao Arduino!');
+  }
+
+  // Favoritos que chamam o serviço PontoService 
+  isFavorite(p?: Ponto | null): boolean {
+    if (!p) return false;
+    return this.pontoService.isFavorite(p.id);
+  }
+
+  toggleFavorite(p: Ponto | null) {
+    if (!p) return;
+    this.pontoService.toggleFavorite(p.id);
   }
 
 }

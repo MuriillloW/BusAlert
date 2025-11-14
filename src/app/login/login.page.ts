@@ -42,14 +42,14 @@ export class LoginPage {
   email: string = '';
   senha: string = '';
 
-  // Função Simples para Tradução dos Códigos de Erro
+  // Função ara tradução dos códigos de erro
   private translateFirebaseError(errorCode: string): string {
     switch (errorCode) {
       case 'auth/invalid-email':
         return 'O formato do e-mail está incorreto.';
       case 'auth/user-not-found':
       case 'auth/wrong-password':
-      case 'auth/invalid-credential': // O erro que você encontrou
+      case 'auth/invalid-credential':
         return 'Credenciais inválidas. E-mail ou senha incorretos.';
       case 'auth/user-disabled':
         return 'Esta conta foi desativada. Entre em contato com o suporte.';

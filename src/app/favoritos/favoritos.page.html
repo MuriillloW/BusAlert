@@ -10,6 +10,10 @@
       {{ p.title }}
     </ion-button>
 
+    <div *ngIf="points.length === 0" class="no-favorites ion-padding">
+      <p>Nenhum favorito salvo. Abra um ponto e clique na estrela para salvar.</p>
+    </div>
+
   <!-- Modal único que mostra os dados do ponto selecionado -->
   <ion-modal [isOpen]="isModalOpen">
     
@@ -32,7 +36,9 @@
       <ion-card class="ponto-card">
 
         <img [src]="selectedPoint?.img" />
-        <ion-button fill="clear" class="favorit-button"><ion-icon name="star-outline"></ion-icon></ion-button>
+        <ion-button fill="clear" class="favorit-button" (click)="toggleFavorite(selectedPoint)">
+          <ion-icon [name]="isFavorite(selectedPoint) ? 'star' : 'star-outline'"></ion-icon>
+        </ion-button>
 
         <ion-card-header>
 
