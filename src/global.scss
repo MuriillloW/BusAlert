@@ -40,3 +40,98 @@
 ion-item {
     --transition: none;
 }
+
+/* Adicione estas linhas no final do seu global.scss */
+
+// Variáveis globais de tema
+:root, .light-theme {
+  --background-color: #f8f9fa;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --input-background: #ffffff;
+  --footer-background: #ffffff;
+}
+
+.dark, .dark-theme {
+  --background-color: #121212;
+  --card-background: #1e1e1e;
+  --text-color: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #333333;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --input-background: #2d2d2d;
+  --footer-background: #1a1a1a;
+}
+
+// Aplicação global do tema
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// Componentes Ionic com tema global
+ion-content {
+  --background: var(--background-color);
+}
+
+ion-headder, ion-toolbar {
+  --background: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+ion-title {
+  color: var(--text-color);
+}
+
+ion-card-title {
+  color: var(--text-color);
+}
+
+ion-card-subtitle {
+  color: var(--text-color);
+}
+
+ion-card {
+  --background: var(--card-background);
+  color: var(--text-color);
+}
+
+ion-modal {
+   --background: var(--background-color);
+   color: var(--text-color);
+}
+
+
+ion-toolbar.footer-bar,
+.footer-bar {
+  --background: var(--footer-background);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+}
+
+
+ion-button {
+    color: red;
+    font-size: 30px;
+    transition: color 0.2s ease;
+}
+
+
+.ion-button-start {
+    margin-left: 20px;
+}
+
+.ion-button-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ion-button-end {
+    margin-right: 20px;
+}
+
