@@ -252,27 +252,19 @@ ion-toggle {
   --handle-background-checked: #ffffff;
 }
 
-// Efeitos de transição suave para todos os elementos
-* {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
 
-// Ajustes específicos para modo escuro
-.dark-theme {
-  .card-user {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  }
-  
-  .edit-button {
-    --background: #2d2d2d;
-  }
-  
-  .act-btn {
-    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  }
-  
-  // Garantir que os textos nos cards fiquem legíveis
-  ion-card-title, ion-card-subtitle {
-    color: var(--text-color);
-  }
+.btn-logout {
+    // margin-top: -20rem;
+    // margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 95%;
+    height: 60px;
+    --border-radius: 15px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+
 }

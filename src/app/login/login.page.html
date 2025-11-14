@@ -12,12 +12,16 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-input label="Digite seu Email:" label-placement="floating" class="login-form" type="text" color="Dark"></ion-input>
-      <ion-input label="Digite sua Senha:" label-placement="floating" class="login-form" type="password" color="Dark"></ion-input>
+      <ion-input [(ngModel)]="email" label="Digite seu Email:" label-placement="floating" class="login-form" type="text" color="Dark"></ion-input>
+      <ion-input [(ngModel)]="senha" label="Digite sua Senha:" label-placement="floating" class="login-form" type="password" color="Dark"></ion-input>
 
-      <ion-button expand="block" class="submit">Entrar</ion-button>
-      <ion-button expand="block" class="submit">Cadastre-se</ion-button>
+      <ion-button expand="block" class="submit" (click)="loginEmail()">Entrar</ion-button>
+      <ion-button expand="block" class="submit" routerLink="/cadastro">Cadastre-se</ion-button>
       <ion-button fill="clear" color="danger">Esqueci minha senha</ion-button>
+
+      @if (error) {
+        <ion-text color="danger"><p class="ion-padding-top">{{ error }}</p></ion-text>
+      }
     </ion-card-content>
     
     
