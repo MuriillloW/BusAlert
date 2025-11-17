@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonInput, IonItem, IonLabel, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton, AlertController, IonToggle  } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, person, star, close, createOutline, sunny, moon } from 'ionicons/icons'
+import { home, person, star, close, createOutline, sunny, moon, cameraReverseOutline } from 'ionicons/icons'
 import { Auth, authState, signOut, User, user, updateProfile, updateEmail } from '@angular/fire/auth';
 import { ThemeService } from 'src/app/services/theme.service';
 import { Router } from '@angular/router';
@@ -45,6 +45,8 @@ export class UserPage implements OnInit {
   
   
   isModalOpen = false;
+  // URL/base64 da imagem de perfil (usa ícone padrão se não houver salvo)
+  profileImage: string = '../../assets/icon/avatar.png';
   // ⬅️ ALTERADO: Inicialização simples para ser substituída pelo Firebase no ngOnInit
   user: { name: string; email: string } = { name: 'Carregando...', email: 'Carregando...' };
   editUser: { name: string; email: string } = { ...this.user };
@@ -56,9 +58,14 @@ export class UserPage implements OnInit {
   private themeService = inject(ThemeService);
   
   // ⬅️ ALTERADO: Substituída a função ngOnInit para carregar os dados do Firebase
+  closeModal() {
+    this.isModalOpen = false;
+  }
   ngOnInit() {
     { 
-      addIcons({ home, person, star, close, createOutline, moon, sunny });
+      addIcons({ home, person, star, close, createOutline, moon, sunny, cameraReverseOutline });
+    }
+    {
     }
     this.userSubscription = user(this.auth).subscribe(u => {
       this.currentUser = u;
@@ -68,6 +75,11 @@ export class UserPage implements OnInit {
         this.editUser = { ...this.user }; // Preenche a modal de edição
       }
     });
+    // Carrega imagem de perfil salva no localStorage, se existir
+    const savedImage = localStorage.getItem('profileImage');
+    if (savedImage) {
+      this.profileImage = savedImage;
+    }
     // Inicializa o tema (carrega preferências e aplica classes no body)
     try {
       this.themeService.initializeTheme();
@@ -184,6 +196,26 @@ export class UserPage implements OnInit {
       buttons: ['OK'],
     });
     await alert.present();
+  }
+
+  // Handler para quando o usuário selecionar um arquivo de imagem
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input || !input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      if (result) {
+        this.profileImage = result;
+        try {
+          localStorage.setItem('profileImage', result);
+        } catch (e) {
+          console.warn('Não foi possível salvar a imagem no localStorage', e);
+        }
+      }
+    };
+    reader.readAsDataURL(file);
   }
 
   private translateError(errorCode: string): string {
