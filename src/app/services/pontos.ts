@@ -20,9 +20,9 @@ const Initial: Ponto [] = [
     },
 
     {   id: 'P02',
-        title: 'Estrada da Cachamorra',
+        title: 'Estrada da Cachorra',
         subtitle: 'Nº2230',
-        img: 'assets/pontos/Praca7.jpg',
+        img: 'assets/pontos/cachorro.png',
         desc: 'Próximo ao mercado Super Compras.'
     },
 
