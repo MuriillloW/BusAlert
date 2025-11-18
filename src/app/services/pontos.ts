@@ -38,8 +38,22 @@ const Initial: Ponto [] = [
         subtitle: 'Nº1000',
         img: 'assets/pontos/Praca7.jpg',
         desc: 'Próximo ao shopping.'
-    }
+    },
 
+    {   id: 'P05',
+        title: 'Rua do Comércio',
+        subtitle: 'Nº200',
+        img: 'assets/pontos/Praca7.jpg',
+        desc: 'Próximo ao centro comercial.'
+    },
+
+    {   id: 'P06',
+        title: 'Rua da Paz',
+        subtitle: 'Nº300',
+        img: 'assets/pontos/Praca7.jpg',
+        desc: 'Próximo à praça da paz.'
+    },
+    
     ];
 @Injectable({ providedIn: 'root' })
 export class PontoService {

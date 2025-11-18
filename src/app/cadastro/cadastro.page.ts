@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
 import { Router, RouterLink } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonList, IonLabel, IonItem, IonInputPasswordToggle, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonText} from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonInput, IonLabel, IonInputPasswordToggle, IonCardContent, IonButton, IonImg} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro.page.html',
   styleUrls: ['./cadastro.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonInput, IonList, IonLabel, IonItem, IonInputPasswordToggle, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonText, RouterLink]
+  imports: [IonContent, IonHeader, CommonModule, FormsModule, IonInput, IonLabel, IonInputPasswordToggle, IonCardContent, IonButton, IonImg]
 })
 
 
