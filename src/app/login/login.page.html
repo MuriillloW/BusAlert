@@ -18,7 +18,7 @@
 
       <ion-button expand="block" class="submit" (click)="loginEmail()">Entrar</ion-button>
       <ion-button expand="block" class="submit" routerLink="/cadastro">Cadastre-se</ion-button>
-      <ion-button fill="clear" class="forgot" color="danger">Esqueci minha senha</ion-button>
+      <ion-button fill="clear" class="forgot" routerLink="/reset-password" color="danger">Esqueci minha senha</ion-button>
 
       @if (error) {
         <ion-text color="danger"><p class="ion-padding-top">{{ error }}</p></ion-text>
