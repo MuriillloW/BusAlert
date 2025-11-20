@@ -1,19 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, 
-  IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
+  IonCardContent, IonModal, ActionSheetController, } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { home, person, star, close, starOutline } from 'ionicons/icons'
 import { Subscription } from 'rxjs';
 import { Ponto, PontoService } from '../services/pontos';
+import { Arduino } from '../services/arduino/arduino';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   imports: [CommonModule, IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, 
-    IonCardSubtitle, IonCardContent, IonModal, IonTab, IonTabs, IonTabBar, IonTabButton  ],
+    IonCardSubtitle, IonCardContent, IonModal],
 })
 
 
@@ -24,7 +25,7 @@ export class HomePage implements OnInit, OnDestroy {
   isModalOpen = false;
   private sub?: Subscription;
 
-  constructor(private pontoService: PontoService, private navCTRL: NavController) {}
+  constructor(private pontoService: PontoService, private navCTRL: NavController, private arduino: Arduino) {}
 
   ngOnInit() {
     this.sub = this.pontoService.getAll().subscribe(list => this.points = list);
@@ -60,9 +61,16 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async sendAlert() {
-    // Aqui você implementa a lógica para enviar o comando ao Arduino
-    // Pode ser via Web Serial API, Bluetooth, etc.
-    console.log('Alerta enviado ao Arduino!');
+    // utiliza o serviço Arduino para alternar o estado (connect/write/disconnect)
+    try {
+      await this.arduino.sendAlert();
+      console.log('Comando enviado ao Arduino com sucesso.');
+      // feedback simples — se quiser, trocar por ToastController do Ionic
+      window.alert('Comando enviado ao Arduino.');
+    } catch (err) {
+      console.error('Falha ao enviar comando ao Arduino', err);
+      window.alert('Erro ao comunicar com Arduino: ' + String(err));
+    }
   }
 
   // Favoritos que chamam o serviço PontoService 
