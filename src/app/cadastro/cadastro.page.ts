@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
 import { Router, RouterLink } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { NavController } from '@ionic/angular/standalone';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonList, IonLabel, IonItem, IonInputPasswordToggle, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonText} from '@ionic/angular/standalone';
 
 @Component({
@@ -30,7 +31,7 @@ export class CadastroPage implements OnInit {
   private router = inject(Router);
   private toastCtrl = inject(ToastController);
 
-  constructor() { }
+  constructor(private navCtrl: NavController) { }
 
   private translateError(errorCode: string): string {
     switch (errorCode) {
@@ -189,6 +190,10 @@ export class CadastroPage implements OnInit {
         await this.setUserError('Ocorreu um erro ao criar a conta. Tente novamente mais tarde.');
       }
     }
+  }
+
+  goLogin() {
+    this.navCtrl.navigateRoot('/login');
   }
 
   ngOnInit() { }

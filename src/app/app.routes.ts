@@ -2,12 +2,16 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'zero-page',
+    loadComponent: () => import('./zero-page/zero-page.page').then(m => m.ZeroPagePage)
+  },
+  {
     path: 'home',
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'zero-page',
     pathMatch: 'full',
   },
   {
@@ -31,11 +35,11 @@ export const routes: Routes = [
     loadComponent: () => import('./edit-user/edit-user.page').then( m => m.EditUserPage)
   },
   {
-    path: 'zero-page',
-    loadComponent: () => import('./zero-page/zero-page.page').then( m => m.ZeroPagePage)
-  },
-  {
     path: 'reset-password',
     loadComponent: () => import('./reset-password/reset-password.page').then( m => m.ResetPasswordPage)
   },
+  {
+    path: '**',
+    redirectTo: 'zero-page'
+  }
 ];

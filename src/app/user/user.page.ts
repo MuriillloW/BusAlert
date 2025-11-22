@@ -199,23 +199,75 @@ export class UserPage implements OnInit {
   }
 
   // Handler para quando o usuário selecionar um arquivo de imagem
-  onFileSelected(event: Event) {
+  async onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input || !input.files || input.files.length === 0) return;
+    
     const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      if (result) {
-        this.profileImage = result;
-        try {
-          localStorage.setItem('profileImage', result);
-        } catch (e) {
-          console.warn('Não foi possível salvar a imagem no localStorage', e);
-        }
+    
+    try {
+      // Comprime a imagem antes de salvar
+      const compressedBase64 = await this.compressImage(file);
+      
+      this.profileImage = compressedBase64;
+      
+      // Salva no localStorage (agora muito mais leve)
+      try {
+        localStorage.setItem('profileImage', compressedBase64);
+        await this.showAlert('Sucesso', 'Foto de perfil atualizada!');
+      } catch (e) {
+        console.warn('Erro ao salvar no localStorage', e);
+        await this.showAlert('Aviso', 'Foto muito grande para salvar localmente.');
       }
-    };
-    reader.readAsDataURL(file);
+
+    } catch (error) {
+      console.error('Erro ao processar imagem:', error);
+      await this.showAlert('Erro', 'Falha ao processar a imagem.');
+    }
+  }
+
+  // Função auxiliar para redimensionar e comprimir a imagem
+  private compressImage(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event: any) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return reject('Canvas context not available');
+
+          // Define o tamanho máximo (ex: 500px)
+          const MAX_WIDTH = 500;
+          const MAX_HEIGHT = 500;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Retorna a imagem comprimida (JPEG com qualidade 0.7)
+          resolve(canvas.toDataURL('image/jpeg', 0.7));
+        };
+        img.onerror = (err) => reject(err);
+      };
+      reader.onerror = (err) => reject(err);
+    });
   }
 
   private translateError(errorCode: string): string {

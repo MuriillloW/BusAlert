@@ -13,7 +13,7 @@
     </ion-button>
 
   <!-- Modal único que mostra os dados do ponto selecionado -->
-  <ion-modal [isOpen]="isModalOpen">
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="onModalDismiss()">
     
     <ng-template>
       
@@ -49,8 +49,6 @@
         <ion-card-content>
           {{ selectedPoint?.desc }}
         </ion-card-content>
-
-        <ion-button fill="clear" color="danger" class="view-map">Ver no Mapa</ion-button>
 
       </ion-card>
 

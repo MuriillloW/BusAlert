@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, 
   IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
@@ -24,6 +24,8 @@ export class HomePage implements OnInit, OnDestroy {
   isModalOpen = false;
   private sub?: Subscription;
 
+  @ViewChild(IonModal) modal!: IonModal;
+
   constructor(private pontoService: PontoService, private navCTRL: NavController) {}
 
   ngOnInit() {
@@ -40,6 +42,10 @@ export class HomePage implements OnInit, OnDestroy {
   } 
 
   closeModal() {
+    this.modal.dismiss();
+  }
+
+  onModalDismiss() {
     this.isModalOpen = false;
     this.selectedPoint = null;
   }

@@ -31,16 +31,16 @@
       <ion-label>CEP</ion-label>
       <ion-input id="cep" #cepInput type="text" maxlength="9" [(ngModel)]="cep" (ionInput)="onCepInput($event)" required></ion-input>
       
-      <!-- <div *ngIf="errorMessage" style="color: red;">
+       <div *ngIf="errorMessage" style="color: red;">
           {{ errorMessage }}
 
 
       @if (error) {
         <ion-text color="red"><p class="ion-padding-top">{{ error }}</p></ion-text>
       }
-      </div> -->
+      </div>
 
-      <ion-button class="submit" (click)="consultarCep(); register()">Cadastrar</ion-button>
+      <ion-button class="submit" (click)="consultarCep(); register(); goLogin()">Cadastrar</ion-button>
 
 
       

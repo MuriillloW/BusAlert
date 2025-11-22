@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
 
@@ -24,7 +24,10 @@ export class FavoritosPage implements OnInit, OnDestroy {
   private sub?: Subscription;
   private subFav?: Subscription;
 
-  constructor(private pontoService: PontoService, private navCTRL: NavController) {}
+  @ViewChild(IonModal) modal!: IonModal;
+
+  constructor(private pontoService: PontoService, private navCTRL: NavController) {
+      addIcons({close,home,star,person});}
 
   ngOnInit() {
     this.sub = this.pontoService.getAll().subscribe(list => {
@@ -45,6 +48,10 @@ export class FavoritosPage implements OnInit, OnDestroy {
   } 
 
   closeModal() {
+    this.modal.dismiss();
+  }
+
+  onModalDismiss() {
     this.isModalOpen = false;
     this.selectedPoint = null;
   }
