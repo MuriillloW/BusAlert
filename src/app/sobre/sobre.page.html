@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/user"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="header-title ion-text-center">Nosso Time</ion-title>
+    <ion-buttons slot="end">
+      <div style="width: 48px"></div> <!-- Espaçador para equilibrar o título centralizado -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <div class="group-hero">
+    <img src="assets/img/group-fun.gif" alt="Grupo se divertindo" class="hero-media">
+    <h2 class="hero-text">Quem faz acontecer</h2>
+  </div>
+
+  <div class="members-container">
+    <ion-card *ngFor="let member of members" class="member-card">
+      
+      <div class="avatar-container" [style.border-color]="member.color">
+        <img [src]="member.image" alt="{{ member.name }}">
+      </div>
+
+      <ion-card-header>
+        <ion-card-title>{{ member.name }}</ion-card-title>
+        <ion-card-subtitle [style.color]="member.color">{{ member.role }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p>"{{ member.description }}"</p>
+        
+        <ion-button fill="clear" class="social-btn">
+          <ion-icon name="logo-github" slot="icon-only"></ion-icon>
+          <span class="social-handle">{{ member.social }}</span>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

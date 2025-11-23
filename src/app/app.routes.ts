@@ -10,6 +10,10 @@ export const routes: Routes = [
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
   },
   {
+    path: 'verify',
+    loadComponent: () => import('./verify-2fa/verify-2fa.page').then((m) => m.Verify2faPage),
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
@@ -43,8 +47,13 @@ export const routes: Routes = [
     loadComponent: () => import('./addponto/addponto.page').then( m => m.AddpontoPage)
   },
   {
+    path: 'sobre',
+    loadComponent: () => import('./sobre/sobre.page').then( m => m.SobrePage)
+  },
+  {
     path: '**',
     redirectTo: 'zero-page'
-  }
+  },
+
 
 ];

@@ -5,8 +5,8 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,Ion
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { home, person, star, close, createOutline, sunny, moon, cameraReverseOutline } from 'ionicons/icons'
-import { Auth, authState, signOut, User, user, updateProfile, updateEmail } from '@angular/fire/auth';
-import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { Auth, authState, signOut, User, user, updateProfile, updateEmail, deleteUser } from '@angular/fire/auth';
+import { Firestore, doc, getDoc, setDoc, deleteDoc } from '@angular/fire/firestore';
 import { ThemeService } from 'src/app/services/theme.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -362,12 +362,62 @@ export class UserPage implements OnInit {
     this.navCtrl.navigateRoot('/addponto');
   }
 
-  async sair() {
-    await signOut(this.auth);
-    await this.router.navigateByUrl('/login');
+  goSobre() {
+    this.navCtrl.navigateRoot('/sobre');
   }
 
+  async sair() {
+    await signOut(this.auth);
+    await this.navCtrl.navigateRoot('/login');
+  }
 
+  async deleteAccount() {
+    const alert = await this.alertController.create({
+      header: 'Excluir Conta',
+      message: 'Tem certeza que deseja excluir sua conta permanentemente? Esta ação não pode ser desfeita.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          handler: async () => {
+            await this.performAccountDeletion();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async performAccountDeletion() {
+    if (!this.currentUser) return;
+
+    try {
+      // 1. Delete from Firestore
+      const userDocRef = doc(this.firestore, `users/${this.currentUser.uid}`);
+      await deleteDoc(userDocRef);
+
+      // 2. Delete from Auth
+      await deleteUser(this.currentUser);
+
+      // 3. Navigate to login
+      this.isModalOpen = false;
+      await this.showAlert('Conta Excluída', 'Sua conta foi excluída com sucesso.');
+      this.navCtrl.navigateRoot('/login');
+
+    } catch (error: any) {
+      console.error('Error deleting account:', error);
+      if (error.code === 'auth/requires-recent-login') {
+        await this.showAlert('Reautenticação Necessária', 'Para excluir sua conta, faça login novamente.');
+        this.sair();
+      } else {
+        await this.showAlert('Erro', 'Não foi possível excluir a conta. Tente novamente.');
+      }
+    }
+  }
 }
 
  addIcons({ home, person, star, close, createOutline, moon, sunny, cameraReverseOutline });

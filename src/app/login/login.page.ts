@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { AuthService } from '../services/auth.service';
 
 import {
   IonContent,
@@ -37,6 +37,7 @@ import { FormsModule } from '@angular/forms';
 export class LoginPage {
   private auth = inject(Auth);
   private router = inject(Router);
+  private authService = inject(AuthService);
   error = '';
 
   email: string = '';
@@ -68,14 +69,24 @@ export class LoginPage {
     this.error = '';
     try {
       await signInWithEmailAndPassword(this.auth, this.email, this.senha);
-      await this.router.navigateByUrl('/home', { replaceUrl: true });
+      // Verifica se o dispositivo é confiável
+      if (this.authService.isTrustedDevice()) {
+        await this.router.navigateByUrl('/home', { replaceUrl: true });
+        return;
+      }
+      // Envia código 2FA para o email
+      await this.authService.send2faCode(this.email);
+      await this.router.navigateByUrl('/verify', { replaceUrl: true });
     } catch (e: any) {
+      // Se for erro do 2FA/emailjs, mostra a mensagem real
+      if (e?.message) {
+        this.error = e.message;
+        return;
+      }
       // Pega o código do erro (ou um fallback)
       const errorCode = e?.code || 'auth/unknown-error';
-
       // 1. Traduz o código do erro para português
       const translatedMessage = this.translateFirebaseError(errorCode);
-
       // 2. Define a variável 'error' que o HTML irá exibir
       this.error = translatedMessage;
     }

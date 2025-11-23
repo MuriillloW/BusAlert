@@ -1,0 +1,17 @@
+<ion-content class="verify-content">
+  <ion-card class="verify-card">
+    <ion-card-header>
+      <ion-card-title>Verificação em duas etapas</ion-card-title>
+      <ion-card-subtitle>Digite o código enviado para seu e-mail</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input [(ngModel)]="code" label="Código" maxlength="6" type="text"></ion-input>
+      <ion-item lines="none">
+        <ion-checkbox [(ngModel)]="saveDevice">Salvar este dispositivo</ion-checkbox>
+        <ion-label>Não pedir código novamente neste dispositivo</ion-label>
+      </ion-item>
+      <ion-button expand="block" (click)="verifyCode()">Verificar</ion-button>
+      <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
