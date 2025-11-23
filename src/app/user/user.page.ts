@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonInput, IonItem, IonLabel, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton, AlertController, IonToggle  } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, person, star, close, createOutline, sunny, moon, cameraReverseOutline } from 'ionicons/icons'
+import { home, person, star, close, createOutline, sunny, moon, cameraReverseOutline, create, checkmark } from 'ionicons/icons'
 import { Auth, authState, signOut, User, user, updateProfile, updateEmail, deleteUser } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, setDoc, deleteDoc } from '@angular/fire/firestore';
 import { ThemeService } from 'src/app/services/theme.service';
@@ -420,4 +420,4 @@ export class UserPage implements OnInit {
   }
 }
 
- addIcons({ home, person, star, close, createOutline, moon, sunny, cameraReverseOutline });
+ addIcons({ home, person, star, close, createOutline, moon, sunny, cameraReverseOutline, create, checkmark });

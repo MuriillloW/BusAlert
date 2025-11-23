@@ -35,14 +35,39 @@ export class HomePage implements OnInit, OnDestroy {
     private pontoService: PontoService, 
     private navCTRL: NavController, 
     private btService: BluetoothService,
-    private userService: UserService
+    private userService: UserService,
+    private alertController: AlertController
   ) {}
 
   get isMaster(): boolean {
     return this.userService.isMaster();
   }
 
-
+  async deletePoint(p: Ponto) {
+    const alert = await this.alertController.create({
+      header: 'Excluir Ponto',
+      message: `Tem certeza que deseja excluir "${p.title}"?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          handler: async () => {
+            try {
+              await this.pontoService.remove(p.id);
+              this.closeModal();
+            } catch (error) {
+              console.error('Erro ao excluir ponto:', error);
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 
   ngOnInit() {
     this.sub = this.pontoService.getAll().subscribe(list => this.points = list);

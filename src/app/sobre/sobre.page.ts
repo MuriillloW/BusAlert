@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonButtons, IonBackButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { logoGithub } from 'ionicons/icons';
+import { logoGithub, handLeftOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-sobre',
@@ -18,41 +18,67 @@ export class SobrePage implements OnInit {
     {
       name: 'Josh',
       role: 'Desenvolvedor Fullstack',
-      description: 'Mestre dos códigos e caçador de bugs.',
-      image: 'assets/pontos/Praca7.jpg', // Coloque o caminho da foto aqui
-      social: '@mrjosh180',
-      color: '#ff4444' // Cor personalizada para borda ou detalhe
+      photo: 'assets/team/josh.jpg',
+      github: 'MrJosh180',
+      funGif: 'assets/team/gifjosh.gif', // Um gif engraçado
+      superPower: 'Fã do Sonic.',
+      isFlipped: false, // Controla a animação
+      stats: [
+        { name: 'Café', value: 90, color: '#6f4e37' },
+        { name: 'Ionic', value: 75, color: '#2965f1' },
+        { name: 'Paciência', value: 20, color: '#ff4444' }
+      ]
     },
     {
       name: 'Murilo Peres',
       role: 'Desenvolvedor Fullstack',
-      description: 'O Cachorrão do Ponto.',
-      image: 'assets/pontos/Praca7.jpg',
-      social: '@MuriillloW',
-      color: '#6f0197ff'
+      photo: 'assets/team/murilo.jpg',
+      github: 'MuriillloW',
+      funGif: 'assets/team/gifmurilo.gif',
+      superPower: 'Vai Teia.',
+      isFlipped: false,
+      stats: [
+        { name: 'Café', value: 30, color: '#6f4e37' },
+        { name: 'Ionic', value: 95, color: '#3880ff' },
+        { name: 'Sono', value: 90, color: '#9c27b0' }
+      ]
     },
     {
-      name: 'Lucas Cunha',
+      name: 'Lucas',
       role: 'Desenvolvedor Fullstack',
-      description: 'Acelerador de Particulas Ambulante.',
-      image: 'assets/pontos/Praca7.jpg',
-      social: '@DlucasCM',
-      color: '#015714c7'
+      photo: 'assets/team/lucas.jpg',
+      github: 'LCMedeiros',
+      funGif: 'assets/team/giflucas.gif', // Um gif engraçado
+      superPower: 'Acelerador de Particulas Ambulante.',
+      isFlipped: false, // Controla a animação
+      stats: [
+        { name: 'Café', value: 10, color: '#6f4e37' },
+        { name: 'Angular', value: 75, color: '#2965f1' },
+        { name: 'Paciência', value: 100, color: '#ff4444' }
+      ]
     },
-       {
-      name: 'Ana Beatriz Arguelho',
+    {
+      name: 'Ana',
       role: 'Desenvolvedora Fullstack',
-      description: 'Apaixonada por design e tecnologia.',
-      image: 'assets/pontos/Praca7.jpg',
-      social: '@anabeatrizarguelho',
-      color: '#fce309f1'
+      photo: 'assets/team/ana.jpg',
+      github: 'anabeatrizarguelho',
+      funGif: 'assets/team/gifana.gif', // Um gif engraçado
+      superPower: 'Dorameira Profissional.',
+      isFlipped: false, // Controla a animação
+      stats: [
+        { name: 'Café', value: 100, color: '#6f4e37' },
+        { name: 'CSS', value: 75, color: '#2965f1' },
+        { name: 'Paciência', value: 20, color: '#ff4444' }
+      ]
     },
-    // Adicione mais membros aqui...
   ];
 
   constructor() {
-    addIcons({ logoGithub });
-  }
+      addIcons({handLeftOutline,logoGithub}); }
 
   ngOnInit() { }
+
+  toggleCard(member: any) {
+    member.isFlipped = !member.isFlipped;
+  }
 }

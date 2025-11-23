@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, Renderer2, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, Renderer2, ViewChild, inject, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, GestureController, Gesture, NavController,  } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -23,6 +23,7 @@ export class ZeroPagePage implements AfterViewInit, OnDestroy {
   private readonly renderer = inject(Renderer2);
   private readonly router = inject(Router);
   private readonly navCtrl = inject(NavController);
+  private readonly zone = inject(NgZone);
 
   ngAfterViewInit(): void {
     if (!this.dragContainer) return;
@@ -62,7 +63,9 @@ export class ZeroPagePage implements AfterViewInit, OnDestroy {
     this.renderer.setStyle(element, 'transform', `translateY(-120vh)`);
     this.renderer.setStyle(element, 'opacity', `0`);
     setTimeout(() => {
-      this.router.navigate(['/login']);
+      this.zone.run(() => {
+        this.router.navigate(['/login']);
+      });
     }, this.animDuration - 30);
   }
 

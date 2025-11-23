@@ -8,7 +8,8 @@ import { home, person, star, close, starOutline } from 'ionicons/icons'
 import { Subscription } from 'rxjs';
 import { Ponto, PontoService } from '../services/pontos';
 import { BluetoothService } from '../services/bluetooth.service';
-
+import { UserService } from '../services/user.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-favoritos',
@@ -27,8 +28,44 @@ export class FavoritosPage implements OnInit, OnDestroy {
 
   @ViewChild(IonModal) modal!: IonModal;
 
-  constructor(private pontoService: PontoService, private navCTRL: NavController, private btService: BluetoothService) {
+  constructor(
+    private pontoService: PontoService, 
+    private navCTRL: NavController, 
+    private btService: BluetoothService,
+    private userService: UserService,
+    private alertController: AlertController
+  ) {
       addIcons({close,home,star,person});}
+
+  get isMaster(): boolean {
+    return this.userService.isMaster();
+  }
+
+  async deletePoint(p: Ponto) {
+    const alert = await this.alertController.create({
+      header: 'Excluir Ponto',
+      message: `Tem certeza que deseja excluir "${p.title}"?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          handler: async () => {
+            try {
+              await this.pontoService.remove(p.id);
+              this.closeModal();
+            } catch (error) {
+              console.error('Erro ao excluir ponto:', error);
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 
   ngOnInit() {
     this.sub = this.pontoService.getAll().subscribe(list => {

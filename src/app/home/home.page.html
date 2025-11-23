@@ -61,6 +61,10 @@
 
       <ion-button id="button-alert"  expand="block" color="danger" (click)="sendAlert()" class="submit">Acionar Alerta!</ion-button>
 
+      <ion-button *ngIf="isMaster" expand="block" fill="outline" color="danger" class="ion-margin-top" (click)="deletePoint(selectedPoint!)">
+        Excluir Ponto
+      </ion-button>
+
     </ng-template>
 
   </ion-modal>
@@ -96,4 +100,3 @@
 
 </ion-footer>
 
-    
