@@ -6,7 +6,9 @@ import { Auth, sendPasswordResetEmail } from '@angular/fire/auth';
 })
 export class AuthService {
 
-  constructor(private auth: Auth) { }
+  constructor(private auth: Auth) { 
+    console.log('AuthService constructor -> auth instance:', auth);
+  }
 
   /**
    * @doc Solicita envio de um e-mail de redefinição de senha.

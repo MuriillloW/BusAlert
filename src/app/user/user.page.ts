@@ -6,6 +6,7 @@ import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { home, person, star, close, createOutline, sunny, moon, cameraReverseOutline } from 'ionicons/icons'
 import { Auth, authState, signOut, User, user, updateProfile, updateEmail } from '@angular/fire/auth';
+import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { ThemeService } from 'src/app/services/theme.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -28,6 +29,7 @@ export class UserPage implements OnInit {
   
   
   private auth: Auth = inject(Auth);
+  private firestore = inject(Firestore);
   private router = inject(Router);
   // Injeção do NavController para navegação entre páginas
   private navCtrl = inject(NavController);
@@ -48,8 +50,8 @@ export class UserPage implements OnInit {
   // URL/base64 da imagem de perfil (usa ícone padrão se não houver salvo)
   profileImage: string = '../../assets/icon/avatar.png';
   // ⬅️ ALTERADO: Inicialização simples para ser substituída pelo Firebase no ngOnInit
-  user: { name: string; email: string } = { name: 'Carregando...', email: 'Carregando...' };
-  editUser: { name: string; email: string } = { ...this.user };
+  user: { name: string; email: string; cep: string } = { name: 'Carregando...', email: 'Carregando...', cep: 'Carregando...' };
+  editUser: { name: string; email: string; cep: string } = { ...this.user };
   notificationsEnabled: boolean = true;
   
   
@@ -67,11 +69,26 @@ export class UserPage implements OnInit {
     }
     {
     }
-    this.userSubscription = user(this.auth).subscribe(u => {
+    this.userSubscription = user(this.auth).subscribe(async u => {
       this.currentUser = u;
       if (u) {
         this.user.name = u.displayName || 'Usuário Sem Nome';
         this.user.email = u.email || 'E-mail não disponível';
+        
+        try {
+          const userDocRef = doc(this.firestore, `users/${u.uid}`);
+          const userSnapshot = await getDoc(userDocRef);
+          if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            this.user.cep = userData['cep'] || 'CEP não cadastrado';
+          } else {
+            this.user.cep = 'CEP não encontrado';
+          }
+        } catch (e) {
+          console.error('Erro ao buscar dados do usuário:', e);
+          this.user.cep = 'Erro ao carregar CEP';
+        }
+
         this.editUser = { ...this.user }; // Preenche a modal de edição
       }
     });
@@ -127,6 +144,22 @@ export class UserPage implements OnInit {
     this.isModalOpen = false;
   }
 
+  onCepInput(event: any) {
+    let val = event.target.value?.toString() || '';
+    val = val.replace(/\D/g, ''); // Remove não dígitos
+    
+    if (val.length > 8) {
+      val = val.substring(0, 8);
+    }
+
+    if (val.length > 5) {
+      val = val.replace(/^(\d{5})(\d)/, '$1-$2');
+    }
+    
+    this.editUser.cep = val;
+    event.target.value = val; 
+  }
+
 
   // ⬅️ ALTERADO: Substituída a função saveProfile com lógica do Firebase
   async saveProfile(){
@@ -138,8 +171,9 @@ export class UserPage implements OnInit {
     
     const nomeMudou = this.editUser.name !== this.user.name;
     const emailMudou = this.editUser.email !== this.user.email;
+    const cepMudou = this.editUser.cep !== this.user.cep;
 
-    if (!nomeMudou && !emailMudou) {
+    if (!nomeMudou && !emailMudou && !cepMudou) {
         this.isModalOpen = false;
         return this.showAlert('Aviso', 'Nenhuma alteração detectada.');
     }
@@ -155,6 +189,20 @@ export class UserPage implements OnInit {
         // 2. Tenta atualizar o E-mail (Pode falhar por segurança!)
         if (emailMudou) {
             await updateEmail(this.currentUser, this.editUser.email);
+        }
+
+        // Atualiza também no Firestore para manter consistência
+        if (nomeMudou || emailMudou || cepMudou) {
+          try {
+            const userDocRef = doc(this.firestore, `users/${this.currentUser.uid}`);
+            await setDoc(userDocRef, {
+              nome: this.editUser.name,
+              email: this.editUser.email,
+              cep: this.editUser.cep
+            }, { merge: true });
+          } catch (fsError) {
+            console.error('Erro ao atualizar Firestore:', fsError);
+          }
         }
 
         // Sucesso: Atualiza o estado local e fecha o modal

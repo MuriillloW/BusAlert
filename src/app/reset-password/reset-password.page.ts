@@ -35,38 +35,68 @@ export class ResetPasswordPage implements OnInit {
    * @doc Lida com o clique do botão para iniciar o processo de redefinição de senha.
    */
   async handlePasswordReset() {
+    console.log('Iniciando reset de senha para:', this.email); // Log para debug
+
+    // Validação básica
+    if (!this.email || !this.email.trim()) {
+      try { await this.presentAlert('Atenção', 'Por favor, digite seu e-mail.'); } catch (e) { console.error('Falha ao mostrar alerta', e); }
+      return;
+    }
+
+    const emailToSend = this.email.trim();
+
     // 1. Mostrar um indicador de carregamento
-    const loading = await this.loadingController.create({
-      message: 'Enviando e-mail...',
-    });
-    await loading.present();
+    let loading: any = null;
+    try {
+      loading = await this.loadingController.create({ message: 'Enviando e-mail...', spinner: 'crescent' });
+      try { await loading.present(); } catch (e) { console.warn('loading.present falhou', e); }
+    } catch (e) {
+      console.warn('Não foi possível criar indicador de carregamento', e);
+      loading = null;
+    }
 
     try {
       // 2. Chamar o método do serviço
-      await this.authService.resetPassword(this.email);
+      console.log('Chamando authService.resetPassword para', emailToSend);
+      await this.authService.resetPassword(emailToSend);
 
-      // 3. Sucesso: Mostrar alerta
-      await this.presentAlert(
-        'Sucesso!', 
-        `Um e-mail de redefinição foi enviado para ${this.email}. Verifique sua caixa de entrada e spam.`
-      );
-      
-      // Limpar o campo ou navegar para a tela de login, se desejar.
-
-    } catch (error: any) {
-      // 4. Erro: Mostrar alerta
-      let errorMessage = 'Ocorreu um erro ao tentar enviar o link.';
-      
-      // Exemplo de tratamento de erro específico do Firebase
-      if (error.code === 'auth/user-not-found') {
-        errorMessage = 'Nenhuma conta encontrada com este e-mail.';
+      // 3. Sucesso: fechar loading (se existir) e mostrar alerta
+      if (loading) {
+        try { await loading.dismiss(); } catch (e) { console.warn('Falha ao dismiss loading', e); }
       }
 
-      await this.presentAlert('Erro', errorMessage);
-      
-    } finally {
-      // 5. Esconder o indicador de carregamento
-      await loading.dismiss();
+      try {
+        await this.presentAlert('Verifique seu E-mail', `Se o e-mail ${emailToSend} estiver cadastrado, você receberá um link para redefinir sua senha. Verifique também a caixa de Spam.`);
+      } catch (e) {
+        console.error('Falha ao mostrar alerta de sucesso', e);
+      }
+
+    } catch (error: any) {
+      console.error('Erro Reset Senha:', error);
+
+      // Garantir que o loading seja fechado
+      if (loading) {
+        try { await loading.dismiss(); } catch (e) { console.warn('Falha ao dismiss loading no catch', e); }
+      }
+
+      // 4. Erro: Mostrar alerta com mensagem amigável
+      let errorMessage = 'Ocorreu um erro ao tentar enviar o link.';
+      try {
+        if (error?.code === 'auth/user-not-found') {
+          errorMessage = 'Nenhuma conta encontrada com este e-mail.';
+        } else if (error?.code === 'auth/invalid-email') {
+          errorMessage = 'O formato do e-mail é inválido.';
+        } else if (error?.message) {
+          errorMessage += ` (Erro: ${error.message})`;
+        } else if (typeof error === 'string') {
+          errorMessage += ` (Erro: ${error})`;
+        }
+      } catch (e) {
+        console.error('Erro ao processar mensagem de erro', e);
+      }
+
+      try { await this.presentAlert('Erro', errorMessage); } catch (e) { console.error('Falha ao mostrar alerta de erro', e); }
+
     }
   }
 
