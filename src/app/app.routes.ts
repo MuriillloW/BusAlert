@@ -11,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'zero-page',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {

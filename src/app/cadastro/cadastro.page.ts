@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { Router, RouterLink } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { NavController } from '@ionic/angular/standalone';
@@ -28,6 +29,7 @@ export class CadastroPage implements OnInit {
   error = '';
 
   private auth = inject(Auth);
+  private firestore = inject(Firestore);
   private router = inject(Router);
   private toastCtrl = inject(ToastController);
 
@@ -166,6 +168,19 @@ export class CadastroPage implements OnInit {
 
       if (user) {
         await updateProfile(user, { displayName: this.nome });
+
+        // Salvar dados adicionais no Firestore
+        try {
+          const userDocRef = doc(this.firestore, `users/${user.uid}`);
+          await setDoc(userDocRef, {
+            nome: this.nome,
+            email: this.email,
+            cep: this.cep
+          });
+        } catch (firestoreError) {
+          console.error('Erro ao salvar dados no Firestore:', firestoreError);
+          // Não bloqueia o fluxo de sucesso do cadastro, mas loga o erro
+        }
 
         try {
           if (typeof user.reload === 'function') {
