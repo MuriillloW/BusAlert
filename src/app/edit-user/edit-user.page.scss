@@ -1,0 +1,122 @@
+// :host {
+//     display: block;
+//     height: 100%;
+// }
+
+.page-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.search-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+ion-button.search-btn {
+    flex: 1 1 auto;
+}
+
+.status-message {
+    color: var(--ion-color-medium);
+    font-size: 0.95rem;
+}
+
+ion-list.device-list {
+    --ion-item-background: transparent;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+ion-item.device-item {
+    --padding-start: 14px;
+    --padding-end: 14px;
+    align-items: center;
+}
+
+.device-info h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.device-info p {
+    margin: 2px 0 0 0;
+    font-size: 0.82rem;
+    color: var(--ion-color-medium);
+}
+
+ion-button.connect-btn {
+    --padding-start: 8px;
+    --padding-end: 8px;
+}
+
+.connected-banner {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(16,185,129,0.08), rgba(16,185,129,0.03));
+    border: 1px solid rgba(16,185,129,0.2);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.connected-banner p {
+    margin: 0;
+    font-weight: 600;
+}
+
+.actions-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+@media (min-width: 700px) {
+    .page-container {
+        padding-left: 32px;
+        padding-right: 32px;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+}
+
+/* Small polish for spinner inside text */
+.spinner-inline {
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+
+
+
+ion-button {
+    color: red;
+    font-size: 30px;
+    transition: color 0.2s ease;
+}
+
+
+.ion-button-start {
+    margin-left: 20px;
+}
+
+.ion-button-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ion-button-end {
+    margin-right: 20px;
+}
+
+.tab-button-icon {
+    font-size: 100px;
+    color: red;
+}
