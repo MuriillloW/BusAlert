@@ -63,7 +63,7 @@ export class UserPage implements OnInit {
   }
   ngOnInit() {
     { 
-      addIcons({ home, person, star, close, createOutline, moon, sunny, cameraReverseOutline });
+     
     }
     {
     }
@@ -298,6 +298,12 @@ export class UserPage implements OnInit {
     this.navCtrl.navigateRoot('/home');
   }
 
+  // Navega para a página de verificação de conexões Bluetooth (edit-user)
+  goEditUser() {
+    // usa NavController para manter stack de navegação
+    this.navCtrl.navigateRoot('/edit-user');
+  }
+
   async sair() {
     await signOut(this.auth);
     await this.router.navigateByUrl('/login');
@@ -305,3 +311,5 @@ export class UserPage implements OnInit {
 
 
 }
+
+ addIcons({ home, person, star, close, createOutline, moon, sunny, cameraReverseOutline });

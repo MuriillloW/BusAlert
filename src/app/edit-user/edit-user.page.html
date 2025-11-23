@@ -1,13 +1,70 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>edit_user</ion-title>
+    <ion-title>Dispositivos Bluetooth</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">edit_user</ion-title>
+      <ion-title size="large">Verificar conexão Bluetooth</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div style="padding:16px;">
+    <div class="page-container">
+      <div class="search-row">
+        <ion-button class="search-btn" expand="block" color="primary" (click)="listDevices()">
+          Procurar dispositivos
+        </ion-button>
+      </div>
+
+      <div class="status-row">
+        <span class="status-message" *ngIf="!isScanning && statusMessage">{{ statusMessage }}</span>
+        <span *ngIf="isScanning">Procurando... <span class="spinner-inline"><ion-spinner name="dots"></ion-spinner></span></span>
+      </div>
+
+      <ion-list *ngIf="devices.length > 0" class="device-list">
+        <ion-item *ngFor="let d of devices" class="device-item">
+          <div class="device-info">
+            <h2>{{ d.name || 'Sem nome' }}</h2>
+            <p>{{ d.address }}</p>
+          </div>
+          <ion-button slot="end" size="small" class="connect-btn" (click)="connect(d.address)">Conectar</ion-button>
+        </ion-item>
+      </ion-list>
+
+      <div *ngIf="connectedAddress" class="connected-banner">
+        <p>Conectado: {{ connectedAddress }}</p>
+        <p *ngIf="lastBtMessage">Última mensagem: {{ lastBtMessage }}</p>
+        <div class="actions-row">
+          <ion-button color="success" (click)="sendTestCommand()">Enviar teste</ion-button>
+          <ion-button color="danger" (click)="sendOffCommand()">Desligar</ion-button>
+          <ion-button color="medium" (click)="disconnect()">Desconectar</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar class="footer-bar">
+    <ion-buttons slot="start">
+      <ion-button class="ion-button-start" (click)="goHome()">
+        <ion-icon name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons>
+      <ion-button class="ion-button-center" (click)="goFavoritos()">
+        <ion-icon name="star"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button class="ion-button-end" (click)="goUser()">
+        <ion-icon name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
