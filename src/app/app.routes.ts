@@ -39,7 +39,12 @@ export const routes: Routes = [
     loadComponent: () => import('./reset-password/reset-password.page').then( m => m.ResetPasswordPage)
   },
   {
+    path: 'addponto',
+    loadComponent: () => import('./addponto/addponto.page').then( m => m.AddpontoPage)
+  },
+  {
     path: '**',
     redirectTo: 'zero-page'
   }
+
 ];

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, combineLatest, map, Subscription, take } from 'rxjs';
 import { Auth, authState } from '@angular/fire/auth';
-import { Firestore, collection, collectionData, doc, setDoc, deleteDoc, serverTimestamp } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, setDoc, deleteDoc, serverTimestamp, addDoc, updateDoc } from '@angular/fire/firestore';
 
 export interface Ponto {
   id: string;
@@ -11,53 +11,18 @@ export interface Ponto {
   desc?: string;
 }
 
-const Initial: Ponto [] = [
-    {   id: 'P01',
-        title: 'Avenida Cesário de Melo',
-        subtitle: 'Nº2230',
-        img: 'assets/pontos/Praca7.jpg',
-        desc: 'Em frente à creche.'
-    },
-
-    {   id: 'P02',
-        title: 'Estrada da Cachorra',
-        subtitle: 'Nº2230',
-        img: 'assets/pontos/Praca7.jpg',
-        desc: 'Próximo ao mercado Super Compras.'
-    },
-
-    {   id: 'P03',
-        title: 'Rua das Flores',
-        subtitle: 'Nº150',
-        img: 'assets/pontos/Praca7.jpg',
-        desc: 'Próximo ao parque das flores.'
-      },
-
-    {  id: 'P04',
-        title: 'Avenida Brasil',
-        subtitle: 'Nº1000',
-        img: 'assets/pontos/Praca7.jpg',
-        desc: 'Próximo ao shopping.'
-    },
-
-    {
-        id: 'P05',
-        title: 'Rua do Sol',
-        subtitle: 'Nº500',
-        img: 'assets/pontos/Praca7.jpg',
-        desc: 'Em frente à padaria Pão Quente.'
-    }
-
-    ];
 @Injectable({ providedIn: 'root' })
 export class PontoService {
-    private pontos$ = new BehaviorSubject<Ponto[]>(Initial);
+    private pontos$: Observable<Ponto[]>;
     // favoritos: local cache de ids
     private FAVORITES_KEY = 'favorites';
     private favoriteIds$ = new BehaviorSubject<string[]>(this.readFavoriteIds());
     private favUnsub?: Subscription;
 
     constructor(private auth: Auth, private firestore: Firestore) {
+        const pontosCollection = collection(this.firestore, 'pontos');
+        this.pontos$ = collectionData(pontosCollection, { idField: 'id' }) as Observable<Ponto[]>;
+
         // observando alteração de autenticação para sincronizar favoritos do usuário
         authState(this.auth).subscribe(user => {
             if (user) {
@@ -71,12 +36,12 @@ export class PontoService {
     }
 
     getAll(): Observable<Ponto[]> {
-        return this.pontos$.asObservable();
+        return this.pontos$;
     }
 
     // retorna com pontos que são favoritos
     getFavorites(): Observable<Ponto[]> {
-        return combineLatest([this.pontos$.asObservable(), this.favoriteIds$.asObservable()]).pipe(
+        return combineLatest([this.pontos$, this.favoriteIds$.asObservable()]).pipe(
             map(([pontos, ids]) => pontos.filter(p => ids.includes(p.id)))
         );
     }
@@ -128,22 +93,18 @@ export class PontoService {
             });
     }
 
-    add(ponto: Ponto) {
-        const list = [...this.pontos$.value, ponto];
-        this.pontos$.next(list);
+    add(ponto: Omit<Ponto, 'id'>) {
+        const pontosCollection = collection(this.firestore, 'pontos');
+        return addDoc(pontosCollection, ponto);
     }
 
     update(updated: Ponto) {
-        const list = this.pontos$.value.map(p => p.id === updated.id ? updated : p);
-        this.pontos$.next(list);
+        const docRef = doc(this.firestore, `pontos/${updated.id}`);
+        return updateDoc(docRef, { ...updated });
     }
 
     remove(id: string) {
-        const list = this.pontos$.value.filter(p => p.id !== id);
-        this.pontos$.next(list);
-    }
-
-    getById(id: string) {
-        return this.pontos$.value.find(p => p.id === id) ?? null;
+        const docRef = doc(this.firestore, `pontos/${id}`);
+        return deleteDoc(docRef);
     }
 }

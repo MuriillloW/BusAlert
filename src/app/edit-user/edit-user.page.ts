@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonItem, IonLabel, IonSpinner, IonIcon, IonFooter, IonButtons  } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonItem, IonSpinner, IonIcon, IonFooter, IonButtons  } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { BluetoothService } from '../services/bluetooth.service';
@@ -11,7 +11,7 @@ import { BluetoothService } from '../services/bluetooth.service';
   templateUrl: './edit-user.page.html',
   styleUrls: ['./edit-user.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonList, IonItem, IonLabel, IonSpinner, IonIcon, IonFooter, IonButtons ],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonList, IonItem, IonSpinner, IonIcon, IonFooter, IonButtons ],
   // note: BluetoothSerial is provided by the plugin package and injected at runtime on device
 })
 export class EditUserPage implements OnInit {

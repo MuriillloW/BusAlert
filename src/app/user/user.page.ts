@@ -10,6 +10,7 @@ import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { ThemeService } from 'src/app/services/theme.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from '../services/user.service';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class UserPage implements OnInit {
   private sub?: Subscription;
   // ⬅️ NOVO: Injeção do AlertController
   private alertController = inject(AlertController);
+  private userService = inject(UserService);
   
   
   email: string | null = null;
@@ -59,6 +61,10 @@ export class UserPage implements OnInit {
   themeIcon: string = 'sunny';
   private themeService = inject(ThemeService);
   
+  get isMaster(): boolean {
+    return this.userService.isMaster();
+  }
+
   // ⬅️ ALTERADO: Substituída a função ngOnInit para carregar os dados do Firebase
   closeModal() {
     this.isModalOpen = false;
@@ -350,6 +356,10 @@ export class UserPage implements OnInit {
   goEditUser() {
     // usa NavController para manter stack de navegação
     this.navCtrl.navigateRoot('/edit-user');
+  }
+
+  goAddPonto() {
+    this.navCtrl.navigateRoot('/addponto');
   }
 
   async sair() {

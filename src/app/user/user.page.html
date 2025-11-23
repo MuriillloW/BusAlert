@@ -43,6 +43,10 @@
       <ion-button class="btn-logout" expand="block" color="danger" (click)="goEditUser()">
         Conectar dispositivo
       </ion-button>
+
+      <ion-button *ngIf="isMaster" class="btn-logout" expand="block" color="danger" (click)="goAddPonto()">
+        Adicionar Ponto
+      </ion-button>
     
   </ion-card>
 
@@ -102,7 +106,7 @@
           </ion-item>
 
           <div class="ion-padding">
-            <ion-button expand="block" (click)="saveProfile()">Salvar Alterações</ion-button>
+            <ion-button expand="block" class="btn-logout" color="danger" (click)="saveProfile()">Salvar Alterações</ion-button>
           </div>
 
                   </ion-card>

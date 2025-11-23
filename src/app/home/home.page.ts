@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, 
-  IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
+  IonCardContent, IonModal, ActionSheetController, } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, person, star, close, starOutline } from 'ionicons/icons'
+import { home, person, star, close, starOutline, add, bluetooth } from 'ionicons/icons'
 import { Subscription } from 'rxjs';
 import { Ponto, PontoService } from '../services/pontos';
 import { AlertController } from '@ionic/angular';
 import { BluetoothService } from '../services/bluetooth.service';
+import { UserService } from '../services/user.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { BluetoothService } from '../services/bluetooth.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   imports: [CommonModule, IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, 
-    IonCardSubtitle, IonCardContent, IonModal, IonTab, IonTabs, IonTabBar, IonTabButton  ],
+    IonCardSubtitle, IonCardContent, IonModal,  ],
 })
 
 
@@ -30,9 +31,16 @@ export class HomePage implements OnInit, OnDestroy {
 
   @ViewChild(IonModal) modal!: IonModal;
 
-  constructor(private pontoService: PontoService, private navCTRL: NavController, private btService: BluetoothService) {}
+  constructor(
+    private pontoService: PontoService, 
+    private navCTRL: NavController, 
+    private btService: BluetoothService,
+    private userService: UserService
+  ) {}
 
-  
+  get isMaster(): boolean {
+    return this.userService.isMaster();
+  }
 
 
 
@@ -73,6 +81,15 @@ export class HomePage implements OnInit, OnDestroy {
     this.navCTRL.navigateRoot('/user');
   }
 
+  goAddPonto(){
+    this.navCTRL.navigateRoot('/addponto');
+  }
+
+    goEditUser() {
+    // usa NavController para manter stack de navegação
+    this.navCTRL.navigateRoot('/edit-user');
+  }
+
   async sendAlert() {
     // Verifica se há conexão ativa (precisamos de uma forma de saber se está conectado, 
     // idealmente o serviço deveria manter esse estado ou expor um Observable)
@@ -108,4 +125,4 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
 }
-addIcons({ home, person, star, close, starOutline })
+addIcons({ home, person, star, close, starOutline, add, bluetooth })

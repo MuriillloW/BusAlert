@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Auth, sendPasswordResetEmail } from '@angular/fire/auth';
 
 @Injectable({
@@ -6,8 +6,10 @@ import { Auth, sendPasswordResetEmail } from '@angular/fire/auth';
 })
 export class AuthService {
 
-  constructor(private auth: Auth) { 
-    console.log('AuthService constructor -> auth instance:', auth);
+  private auth: Auth = inject(Auth);
+
+  constructor() { 
+    console.log('AuthService constructor -> auth instance:', this.auth);
   }
 
   /**

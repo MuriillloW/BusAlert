@@ -77,6 +77,10 @@ ion-button.connect-btn {
     margin-top: 8px;
 }
 
+.actions-row ion-button {
+    flex: 1 1 auto;
+}
+
 @media (min-width: 700px) {
     .page-container {
         padding-left: 32px;
@@ -93,8 +97,35 @@ ion-button.connect-btn {
     margin-left: 6px;
 }
 
+.connect-btn {
+font-size: 20px;
+    --color: white;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 55%;
+    height: 20px;
+    --border-radius: 15px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
 
+}
 
+.actions-row ion-button {
+    flex: 1 1 auto;
+    min-width: 100px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    border-radius: 12px;
+    height: 44px;
+    font-weight: 600;
+    --box-shadow: 0 2px 8px var(--shadow-color);
+    text-transform: none; /* keep labels as written */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 
 ion-button {
     color: red;

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, ActionSheetController, IonTab, IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, ActionSheetController} from '@ionic/angular/standalone';
 
 import { NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -16,7 +16,7 @@ import { BluetoothService } from '../services/bluetooth.service';
   styleUrls: ['./favoritos.page.scss'],
   standalone: true,
   imports: [CommonModule, IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons ,IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, 
-    IonCardSubtitle, IonCardContent, IonModal, IonTab, IonTabs, IonTabBar, IonTabButton  ]
+    IonCardSubtitle, IonCardContent, IonModal ]
 })
 export class FavoritosPage implements OnInit, OnDestroy {
   points: Ponto[] = [];

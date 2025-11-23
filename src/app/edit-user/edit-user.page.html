@@ -14,7 +14,7 @@
   <div style="padding:16px;">
     <div class="page-container">
       <div class="search-row">
-        <ion-button class="search-btn" expand="block" color="primary" (click)="listDevices()">
+        <ion-button class="search-btn" expand="block" color="danger" (click)="listDevices()">
           Procurar dispositivos
         </ion-button>
       </div>
@@ -30,7 +30,7 @@
             <h2>{{ d.name || 'Sem nome' }}</h2>
             <p>{{ d.address }}</p>
           </div>
-          <ion-button slot="end" size="small" class="connect-btn" (click)="connect(d.address)">Conectar</ion-button>
+          <ion-button slot="end" size="small" class="connect-btn" color="danger" (click)="connect(d.address)">Conectar</ion-button>
         </ion-item>
       </ion-list>
 
@@ -38,9 +38,7 @@
         <p>Conectado: {{ connectedAddress }}</p>
         <p *ngIf="lastBtMessage">Última mensagem: {{ lastBtMessage }}</p>
         <div class="actions-row">
-          <ion-button color="success" (click)="sendTestCommand()">Enviar teste</ion-button>
-          <ion-button color="danger" (click)="sendOffCommand()">Desligar</ion-button>
-          <ion-button color="medium" (click)="disconnect()">Desconectar</ion-button>
+          <ion-button color="danger" (click)="disconnect()">Desconectar</ion-button>
         </div>
       </div>
     </div>
