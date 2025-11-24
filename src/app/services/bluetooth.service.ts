@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { BleClient } from '@capacitor-community/bluetooth-le';
 import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
@@ -9,6 +9,8 @@ export class BluetoothService {
   // For Web Bluetooth fallback
   private webDevice: any | null = null;
   private webServer: any | null = null;
+  // Tenta injetar AndroidPermissions de forma opcional (pode não existir em web)
+  private androidPermissions: AndroidPermissions | null = inject(AndroidPermissions, { optional: true }) as any;
 
   constructor() {}
 
@@ -150,18 +152,85 @@ export class BluetoothService {
 
   // Solicita permissões Android via plugin cordova-plugin-android-permissions se disponível
   async requestAndroidPermissions(): Promise<{ granted: string[]; denied: string[] } | null> {
+    console.log('requestAndroidPermissions: starting');
     const perms = this.getPermissionsPlugin();
+
+    // Preferir constantes fornecidas pelo wrapper quando disponíveis,
+    // caso contrário usar os nomes completos (compatibilidade com window.plugins.permissions)
+    const toRequest = (() => {
+      try {
+        if (this.androidPermissions && (this.androidPermissions as any).PERMISSION) {
+          const P: any = (this.androidPermissions as any).PERMISSION;
+          return [P.ACCESS_FINE_LOCATION || 'android.permission.ACCESS_FINE_LOCATION', P.BLUETOOTH_SCAN || 'android.permission.BLUETOOTH_SCAN', P.BLUETOOTH_CONNECT || 'android.permission.BLUETOOTH_CONNECT'];
+        }
+      } catch (e) { /* ignore */ }
+      return ['android.permission.ACCESS_FINE_LOCATION', 'android.permission.BLUETOOTH_SCAN', 'android.permission.BLUETOOTH_CONNECT'];
+    })();
+    // Se o AndroidPermissions (wrapper) estiver disponível, use-o (mais granular)
+    if (this.androidPermissions) {
+      const granted: string[] = [];
+      const denied: string[] = [];
+
+      for (const p of toRequest) {
+        try {
+          const maybePermission = (this.androidPermissions && (this.androidPermissions as any).PERMISSION && (this.androidPermissions as any).PERMISSION[p]) ? (this.androidPermissions as any).PERMISSION[p] : p;
+          const checkRes: any = await this.androidPermissions.checkPermission(maybePermission as any);
+          const has = checkRes && (checkRes.hasPermission === true || checkRes.permission === 'GRANTED' || checkRes.hasPermission === 'GRANTED');
+          if (has) {
+            granted.push(p);
+            continue;
+          }
+
+          // solicita a permissão explicitamente
+          const reqRes: any = await this.androidPermissions.requestPermission(maybePermission as any);
+          const ok = reqRes && (reqRes.hasPermission === true || reqRes.permission === 'GRANTED' || reqRes === 'GRANTED');
+          if (ok) granted.push(p);
+          else denied.push(p);
+        } catch (e) {
+          // melhor log do erro (inclui propriedades não enumeráveis)
+          try {
+            console.warn('Erro ao checar/solicitar permissão', p, JSON.stringify(e, Object.getOwnPropertyNames(e)));
+          } catch (j) {
+            console.warn('Erro ao checar/solicitar permissão', p, e);
+          }
+          denied.push(p);
+        }
+      }
+
+      // Se houver o plugin cordova de permissões, faça uma verificação final cruzada
+      try {
+        const permsPlugin = this.getPermissionsPlugin();
+        if (permsPlugin) {
+          const finalGranted: string[] = [];
+          const finalDenied: string[] = [];
+          for (const p of toRequest) {
+            const hasNow = await new Promise<boolean>((resolve) => {
+              try {
+                permsPlugin.checkPermission(p, (status: any) => {
+                  const has = status && (status.hasPermission === true || status === 'GRANTED' || status === 'OK');
+                  resolve(!!has);
+                }, (err: any) => resolve(false));
+              } catch (e) { resolve(false); }
+            });
+            if (hasNow) finalGranted.push(p); else finalDenied.push(p);
+          }
+          // sobrescreve granted/denied com verificação final
+          try { console.log('requestAndroidPermissions final check (permissions plugin):', JSON.stringify({ granted: finalGranted, denied: finalDenied })); } catch(e) { console.log('requestAndroidPermissions final check (permissions plugin):', { granted: finalGranted, denied: finalDenied }); }
+          return { granted: finalGranted, denied: finalDenied };
+        }
+      } catch (e) {
+        console.warn('Erro ao fazer verificação final de permissões', e);
+      }
+
+      try { console.log('requestAndroidPermissions result (androidPermissions):', JSON.stringify({ granted, denied })); } catch(e) { console.log('requestAndroidPermissions result (androidPermissions):', { granted, denied }); }
+      return { granted, denied };
+    }
+
+    // Fallback: use window.plugins.permissions (Cordova) se disponível
     if (!perms) return null;
 
-    const toRequest = [
-      'android.permission.ACCESS_FINE_LOCATION',
-      'android.permission.BLUETOOTH_SCAN',
-      'android.permission.BLUETOOTH_CONNECT'
-    ];
-
-    return await new Promise((resolve) => {
+    const result = await new Promise<{ granted: string[]; denied: string[] }>((resolve) => {
       perms.requestPermissions(toRequest, (status: any) => {
-        // status may be an object with permission booleans
         const granted: string[] = [];
         const denied: string[] = [];
         try {
@@ -178,6 +247,34 @@ export class BluetoothService {
         resolve({ granted: [], denied: toRequest });
       });
     });
+
+    // Faça uma verificação final, pois alguns WebViews/plugins podem relatar estado incorreto logo após request
+    try {
+      const permsPlugin = this.getPermissionsPlugin();
+      if (permsPlugin) {
+        const finalGranted: string[] = [];
+        const finalDenied: string[] = [];
+        for (const p of toRequest) {
+          const hasNow = await new Promise<boolean>((resolve) => {
+            try {
+              permsPlugin.checkPermission(p, (status: any) => {
+                const has = status && (status.hasPermission === true || status === 'GRANTED' || status === 'OK');
+                resolve(!!has);
+              }, (err: any) => resolve(false));
+            } catch (e) { resolve(false); }
+          });
+          if (hasNow) finalGranted.push(p); else finalDenied.push(p);
+        }
+        try { console.log('requestAndroidPermissions result (permissions plugin final):', JSON.stringify({ granted: finalGranted, denied: finalDenied })); } catch(e) { console.log('requestAndroidPermissions result (permissions plugin final):', { granted: finalGranted, denied: finalDenied }); }
+        return { granted: finalGranted, denied: finalDenied };
+      }
+    } catch (e) {
+      console.warn('Erro ao fazer verificação final (fallback) de permissões', e);
+    }
+
+    try { console.log('requestAndroidPermissions result (permissions plugin):', JSON.stringify(result)); } catch(e) { console.log('requestAndroidPermissions result (permissions plugin):', result); }
+
+    return result as { granted: string[]; denied: string[] };
   }
 
   // Ler uma vez (plugin classic)

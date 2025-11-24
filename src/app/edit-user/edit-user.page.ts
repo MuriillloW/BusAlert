@@ -45,10 +45,42 @@ export class EditUserPage implements OnInit {
     // Solicita permissões Android necessárias antes de listar
     try {
       const perms = await this.btService.requestAndroidPermissions();
-      // Se plugin de permissões não estiver disponível (web), perms pode ser null
+      try { console.log('listDevices: permissions result from service', JSON.stringify(perms)); } catch(e) { console.log('listDevices: permissions result from service', perms); }
+
+      // Se o serviço reportou permissões negadas, verifique explicitamente o estado atual
       if (perms && perms.denied && perms.denied.length > 0) {
-        await this.showAlert('Permissão necessária', 'A aplicação precisa das permissões Bluetooth para listar dispositivos. Por favor permita nas configurações.');
-        return;
+        const w: any = window as any;
+        const permsPlugin = w && w.plugins && w.plugins.permissions ? w.plugins.permissions : null;
+        const stillDenied: string[] = [];
+
+        for (const p of perms.denied) {
+          let grantedNow = false;
+          // Tenta checar por diferentes possíveis APIs expostas no WebView
+          try {
+            if ((w as any).AndroidPermissions && typeof (w as any).AndroidPermissions.checkPermission === 'function') {
+              try {
+                const ch = await (w as any).AndroidPermissions.checkPermission(p);
+                if (ch && (ch.hasPermission === true || ch === 'GRANTED' || ch === 'OK')) grantedNow = true;
+              } catch(e) { /* continue to other checks */ }
+            }
+
+            if (!grantedNow && permsPlugin && typeof permsPlugin.checkPermission === 'function') {
+              const ok = await new Promise<boolean>((resolve) => {
+                try {
+                  permsPlugin.checkPermission(p, (status: any) => {
+                    const has = status && (status.hasPermission === true || status === 'GRANTED' || status === 'OK');
+                    resolve(!!has);
+                  }, (err: any) => resolve(false));
+                } catch (e) { resolve(false); }
+              });
+              if (ok) grantedNow = true;
+            }
+          } catch (e) {
+            console.warn('Erro ao verificar permissão atual', p, e);
+          }
+
+          if (!grantedNow) stillDenied.push(p);
+        }
       }
     } catch (errPerm: any) {
       console.error('Erro solicitando permissões', errPerm);
@@ -56,6 +88,8 @@ export class EditUserPage implements OnInit {
       return;
     }
 
+    // Pequeno atraso para permitir que o sistema finalize alterações de permissão antes de listar
+    await new Promise((resolve) => setTimeout(resolve, 350));
     this.isScanning = true;
     this.devices = [];
     try {
