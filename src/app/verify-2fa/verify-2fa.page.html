@@ -10,7 +10,7 @@
         <ion-checkbox [(ngModel)]="saveDevice">Salvar este dispositivo</ion-checkbox>
         <ion-label>Não pedir código novamente neste dispositivo</ion-label>
       </ion-item>
-      <ion-button expand="block" (click)="verifyCode()">Verificar</ion-button>
+      <ion-button class="verify-btn" expand="block" (click)="verifyCode()">Verificar</ion-button>
       <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
     </ion-card-content>
   </ion-card>

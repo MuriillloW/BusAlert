@@ -268,3 +268,16 @@ ion-toggle {
     transition: transform 0.2s ease;
 
 }
+
+  .forgot {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+// Centraliza o botão "forgot" (Sobre o App)
+ion-button.forgot, .forgot {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}

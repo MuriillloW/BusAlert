@@ -16,7 +16,7 @@ export class SobrePage implements OnInit {
 // Lista de membros do grupo
   members = [
     {
-      name: 'Josh',
+      name: 'Josué Almeida',
       role: 'Desenvolvedor Fullstack',
       photo: 'assets/team/josh.jpg',
       github: 'MrJosh180',
@@ -26,7 +26,7 @@ export class SobrePage implements OnInit {
       stats: [
         { name: 'Café', value: 90, color: '#6f4e37' },
         { name: 'Ionic', value: 75, color: '#2965f1' },
-        { name: 'Paciência', value: 20, color: '#ff4444' }
+        { name: 'Paciência', value: 80, color: '#ff4444' }
       ]
     },
     {
@@ -44,7 +44,7 @@ export class SobrePage implements OnInit {
       ]
     },
     {
-      name: 'Lucas',
+      name: 'Lucas Medeiros',
       role: 'Desenvolvedor Fullstack',
       photo: 'assets/team/lucas.jpg',
       github: 'LCMedeiros',
@@ -58,7 +58,7 @@ export class SobrePage implements OnInit {
       ]
     },
     {
-      name: 'Ana',
+      name: 'Ana Beatriz Arguelho',
       role: 'Desenvolvedora Fullstack',
       photo: 'assets/team/ana.jpg',
       github: 'anabeatrizarguelho',

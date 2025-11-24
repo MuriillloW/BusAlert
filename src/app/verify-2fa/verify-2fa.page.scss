@@ -1,88 +1,135 @@
-/* Estilos básicos para a tela de verificação 2FA */
-.verify-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+// verify-2fa.page.scss
+
+// Garante que o conteúdo ocupe a altura total para centralização
+:host {
+  display: block;
+  height: 100%;
 }
 
+ion-content {
+  --background: var(--background-color);
+  
+  // Centraliza o card verticalmente e horizontalmente
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Estilo do Card Principal
 .verify-card {
-  width: 100%;
-  max-width: 380px;
-  margin: auto;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
-  background: #fff;
-  padding: 32px 24px 24px 24px;
-  border: 1px solid #e0e7ef;
+  background: var(--card-background);
+  border-radius: 20px; // Borda arredondada padrão do seu app
+  box-shadow: var(--shadow-color);
+  margin: 15vh auto 0; // Empurra um pouco para baixo
+  width: 90%;
+  max-width: 400px; // Limite para não ficar gigante em Desktop
+  padding: 20px 10px;
+  animation: slideUp 0.6s ease-out; // Animação de entrada
 }
 
 ion-card-header {
   text-align: center;
-  margin-bottom: 18px;
+  padding-bottom: 0;
 }
 
 ion-card-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2d3a4b;
-  margin-bottom: 4px;
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 ion-card-subtitle {
-  font-size: 1rem;
-  color: #6c7a89;
-  margin-bottom: 12px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 
+// Estilização do Input de Código
 ion-input {
-  margin-bottom: 18px;
-  --background: #f5f7fa;
+  --background: var(--input-background); // Usa sua variável global
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --padding-top: 15px;
+  --padding-bottom: 15px;
   --border-radius: 10px;
-  --padding-start: 12px;
-  --padding-end: 12px;
-  font-size: 1.1rem;
+  --placeholder-color: var(--text-secondary);
+  --color: var(--text-color);
+  
+  border: 1px solid var(--border-color);
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 20px; // Texto maior para digitar código
+  letter-spacing: 5px; // Espaçamento entre os números do código
+  text-align: center;
+  
+  // Foco para destaque
+  &.has-focus {
+    border-color: var(--ion-color-primary, #3880ff);
+  }
 }
 
+// Ajuste do Checkbox e Texto Auxiliar
 ion-item {
   --background: transparent;
-  --border-radius: 10px;
-  margin-bottom: 12px;
-  align-items: center;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+
+  ion-checkbox {
+    --size: 20px;
+    --border-radius: 4px;
+    margin-inline-end: 10px;
+    font-size: 14px;
+    color: var(--text-color);
+  }
+
+  // O texto "Não pedir código..."
+  ion-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: normal; // Permite quebra de linha
+    margin-top: 5px;
+    display: block;
+  }
 }
 
-ion-checkbox {
-  margin-right: 10px;
-  --checkbox-background-checked: #3b82f6;
-  --checkbox-background: #e0e7ef;
-}
-
-ion-label {
-  font-size: 0.98rem;
-  color: #2d3a4b;
-}
-
+// Botão estilo "Submit" (Baseado no seu Home)
 ion-button {
+  --border-radius: 15px;
+  --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  font-weight: bold;
+  font-size: 18px;
+  height: 55px;
   margin-top: 10px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  --background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
-  --border-radius: 10px;
-  --box-shadow: 0 2px 8px 0 rgba(59, 130, 246, 0.10);
+  text-transform: uppercase;
+  color: white;
+  --background: red;
 }
 
+// Mensagem de Erro
 ion-text[color="danger"] {
   display: block;
   text-align: center;
-  margin-top: 12px;
-  font-size: 1rem;
-  color: #ef4444;
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 14px;
+  animation: shake 0.4s ease-in-out; // Treme se der erro
 }
 
-@media (max-width: 480px) {
-  .verify-card {
-    padding: 18px 6px 18px 6px;
-    max-width: 98vw;
-  }
+// --- Animações ---
+
+// Entrada suave de baixo para cima
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Efeito de tremor para erro
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
